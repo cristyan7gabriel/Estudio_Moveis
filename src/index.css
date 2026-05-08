@@ -87,10 +87,28 @@ button {
   text-align: center;
 }
 
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  width: 100%;
+}
+
+.section-title-line {
+  flex: 1;
+  height: 1px;
+  background-color: rgba(45, 62, 51, 0.15);
+}
+
 .section-title {
-  font-size: clamp(2.5rem, 5vw, 3.5rem);
-  margin-bottom: 1.5rem;
-  color: var(--color-text-base);
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  color: var(--color-primary);
+  white-space: nowrap;
+  font-family: var(--font-sans);
 }
 
 .section-subtitle {

@@ -17,13 +17,12 @@ export const CategoryPage = () => {
   }
 
   return (
-    <main style={{ minHeight: '80vh', paddingTop: '100px' }}>
+    <main style={{ minHeight: '80vh', paddingTop: '120px' }}>
       <div className="container">
-        <div style={{ marginBottom: '3rem', borderBottom: '1px solid rgba(0,0,0,0.1)', paddingBottom: '1rem' }}>
-          <h1 className="section-title" style={{ marginBottom: '0.5rem' }}>{category.name}</h1>
-          <p className="section-subtitle" style={{ margin: 0, textAlign: 'left' }}>
-            Explore nossa coleção exclusiva de {category.name.toLowerCase()}.
-          </p>
+        <div className="section-header" style={{ marginBottom: '4rem' }}>
+          <div className="section-title-line"></div>
+          <h1 className="section-title">{category.name}</h1>
+          <div className="section-title-line"></div>
         </div>
       </div>
       

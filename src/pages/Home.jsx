@@ -22,10 +22,14 @@ const AmbientesPlanejados = () => {
   return (
     <section className="planned-environments section">
       <div className="container">
+        <div className="section-header">
+          <div className="section-title-line"></div>
+          <h2 className="section-title">Ambientes Planejados</h2>
+          <div className="section-title-line"></div>
+        </div>
         <div className="planned-grid">
           <div className="planned-content">
-            <h2 className="section-title">Ambientes Planejados</h2>
-            <p className="section-subtitle" style={{ margin: '0 0 2rem 0', textAlign: 'left' }}>
+            <p className="section-subtitle" style={{ margin: '0 0 2rem 0', textAlign: 'left', maxWidth: 'none' }}>
               Mais do que móveis, entregamos soluções completas. Nossa equipe de arquitetos projeta seu ambiente dos sonhos, unindo estética contemporânea e funcionalidade perfeita para o seu dia a dia.
             </p>
             <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ alignSelf: 'flex-start' }}>

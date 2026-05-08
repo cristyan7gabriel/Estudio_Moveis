@@ -111,10 +111,12 @@ export const ProductCard = ({ id, title, description, image }) => {
 export const ProductGrid = ({ title, subtitle, products }) => {
   return (
     <section className="container section">
-      <div style={{ textAlign: 'left', marginBottom: '3rem' }}>
-        {title && <h2 className="section-title">{title}</h2>}
-        {subtitle && <p className="section-subtitle" style={{ margin: '0' }}>{subtitle}</p>}
+      <div className="section-header">
+        <div className="section-title-line"></div>
+        <h2 className="section-title">{title}</h2>
+        <div className="section-title-line"></div>
       </div>
+      {subtitle && <p className="section-subtitle text-center" style={{ marginTop: '-1.5rem', marginBottom: '3rem' }}>{subtitle}</p>}
       <div className="product-grid">
         {products.map((prod) => (
           <ProductCard key={prod.id} {...prod} />
