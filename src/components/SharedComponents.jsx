@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { MessageCircle, Phone, MapPin, Sofa, Armchair, Briefcase, BedDouble, ArrowRight } from 'lucide-react';
+import { MessageCircle, Phone, MapPin, Sofa, Armchair, Briefcase, BedDouble, ArrowRight, Menu, X } from 'lucide-react';
 import { categories } from '../data/products';
 
 export const WHATSAPP_LINK = "https://wa.me/556292421294?text=Olá,%20gostaria%20de%20falar%20com%20um%20consultor%20do%20Estúdio%20Móveis.";
@@ -16,6 +16,7 @@ const InstagramIcon = ({ size = 24 }) => (
 
 export const Header = () => {
   const [scrolled, setScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -26,18 +27,24 @@ export const Header = () => {
   return (
     <header className="header" style={{ boxShadow: scrolled ? '0 2px 10px rgba(0,0,0,0.05)' : 'none' }}>
       <div className="container header-container">
-        <Link to="/" className="logo">Estúdio Móveis.</Link>
-        <nav className="nav-links">
+        <Link to="/" className="logo" onClick={() => setIsMenuOpen(false)}>Estúdio Móveis.</Link>
+        
+        <nav className={`nav-links ${isMenuOpen ? 'nav-active' : ''}`}>
           {categories.map(cat => (
             <Link 
               key={cat.id} 
               to={`/categoria/${cat.id}`} 
               className={`nav-link ${cat.isHighlight ? 'nav-link-highlight' : ''}`}
+              onClick={() => setIsMenuOpen(false)}
             >
               {cat.name}
             </Link>
           ))}
         </nav>
+
+        <button className="mobile-menu-btn" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
       </div>
     </header>
   );

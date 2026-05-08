@@ -401,6 +401,12 @@ button {
   opacity: 0.5;
 }
 
+.mobile-menu-btn {
+  display: none;
+  color: var(--color-primary);
+  z-index: 2000;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .planned-grid {
@@ -413,20 +419,84 @@ button {
 }
 
 @media (max-width: 768px) {
+  :root {
+    --header-height: 70px;
+    --spacing-xl: 4rem;
+  }
+
+  .mobile-menu-btn {
+    display: block;
+  }
+
   .nav-links {
-    display: none;
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 80%;
+    height: 100vh;
+    background-color: var(--color-bg);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    transition: var(--transition-base);
+    box-shadow: -10px 0 30px rgba(0,0,0,0.05);
+    z-index: 1500;
   }
-  
+
+  .nav-links.nav-active {
+    right: 0;
+  }
+
+  .logo {
+    font-size: 1.2rem;
+  }
+
   .hero-title {
-    font-size: 3rem;
+    font-size: 2.2rem;
+    margin-bottom: 1.5rem;
+    padding: 0 1rem;
   }
-  
+
+  .hero-subtitle {
+    font-size: 1rem;
+    margin-bottom: 2rem;
+    padding: 0 1rem;
+  }
+
+  .section-header {
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .section-title {
+    font-size: 0.9rem;
+    letter-spacing: 0.2em;
+  }
+
   .footer-grid {
     grid-template-columns: 1fr;
     gap: 3rem;
+    text-align: center;
   }
   
-  .section {
-    padding: 4rem 0;
+  .footer-col p,
+  .footer-col a {
+    justify-content: center;
+  }
+
+  .planned-image {
+    height: 400px;
+  }
+
+  .floating-whatsapp {
+    bottom: 2rem;
+    right: 2rem;
+    width: 55px;
+    height: 55px;
+  }
+
+  main {
+    padding-top: 80px !important;
   }
 }
