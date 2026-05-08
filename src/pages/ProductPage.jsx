@@ -29,20 +29,20 @@ export const ProductPage = () => {
           <ArrowLeft size={16} /> Voltar para {category?.name || 'Categoria'}
         </Link>
         
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '4rem', alignItems: 'start' }}>
+        <div className="product-detail-grid">
           
-          <div style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
+          <div style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden', boxShadow: 'var(--shadow-medium)' }}>
             <img src={product.image} alt={product.title} style={{ width: '100%', height: 'auto', display: 'block' }} />
           </div>
           
-          <div style={{ padding: '1rem 0' }}>
-            <span style={{ textTransform: 'uppercase', fontSize: '0.8rem', letterSpacing: '2px', color: 'var(--color-primary)', fontWeight: 'bold' }}>
+          <div className="product-detail-info">
+            <span style={{ textTransform: 'uppercase', fontSize: '0.8rem', letterSpacing: '2px', color: 'var(--color-accent)', fontWeight: 'bold' }}>
               {category?.name}
             </span>
-            <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '3rem', marginTop: '0.5rem', marginBottom: '1rem' }}>
+            <h1 className="product-detail-title">
               {product.title}
             </h1>
-            <p style={{ fontSize: '1.5rem', color: 'var(--color-text-muted)', marginBottom: '2rem' }}>
+            <p style={{ fontSize: '1.25rem', color: 'var(--color-text-muted)', marginBottom: '2rem' }}>
               {product.price}
             </p>
             
@@ -51,19 +51,19 @@ export const ProductPage = () => {
             </p>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '3rem' }}>
-              <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ padding: '1rem', fontSize: '1.1rem', justifyContent: 'center' }}>
+              <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ padding: '1rem', width: '100%' }}>
                 <MessageCircle size={20} /> Falar com Consultor
               </a>
             </div>
             
-            <div style={{ borderTop: '1px solid rgba(0,0,0,0.1)', paddingTop: '2rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div style={{ borderTop: '1px solid rgba(0,0,0,0.1)', paddingTop: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: 'var(--color-text-muted)' }}>
-                <ShieldCheck size={24} color="var(--color-primary)" />
-                <span>Garantia estendida Estúdio Móveis</span>
+                <ShieldCheck size={20} style={{ color: 'var(--color-accent)' }} />
+                <span style={{ fontSize: '0.9rem' }}>Garantia estendida Estúdio Móveis</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: 'var(--color-text-muted)' }}>
-                <Truck size={24} color="var(--color-primary)" />
-                <span>Entrega especializada para todo o Brasil</span>
+                <Truck size={20} style={{ color: 'var(--color-accent)' }} />
+                <span style={{ fontSize: '0.9rem' }}>Entrega especializada para todo o Brasil</span>
               </div>
             </div>
           </div>
