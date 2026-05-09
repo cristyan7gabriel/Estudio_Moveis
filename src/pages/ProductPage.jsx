@@ -42,7 +42,7 @@ export const ProductPage = () => {
             </div>
             
             {hasGallery && (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))', gap: '1rem' }}>
+              <div className="product-thumbnails">
                 {product.images.map((img, idx) => (
                   <div 
                     key={idx} 
