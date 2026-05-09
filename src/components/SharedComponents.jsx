@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { MessageCircle, Phone, MapPin, Sofa, Armchair, Briefcase, BedDouble, ArrowRight, Menu, X } from 'lucide-react';
 import { categories } from '../data/products';
 
-export const WHATSAPP_LINK = "https://wa.me/556292421294?text=Olá,%20gostaria%20de%20falar%20com%20um%20consultor%20do%20Estúdio%20Móveis.";
+export const WHATSAPP_PHONE = "556292421294";
+export const getWhatsAppLink = (message) => `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
+export const WHATSAPP_LINK = getWhatsAppLink("Olá, gostaria de falar com um consultor do Estúdio Móveis.");
 export const INSTAGRAM_LINK = "https://www.instagram.com/estudiomoveisdecor";
 
-const InstagramIcon = ({ size = 24 }) => (
+export const InstagramIcon = ({ size = 24 }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
@@ -18,16 +20,24 @@ export const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const location = useLocation();
+  const isHomePage = location.pathname === '/';
+
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', handleScroll);
+    if (isHomePage) {
+      window.addEventListener('scroll', handleScroll);
+      handleScroll(); // Check initial scroll
+    } else {
+      setScrolled(true);
+    }
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [isHomePage]);
 
   return (
-    <header className="header" style={{ boxShadow: scrolled ? '0 2px 10px rgba(0,0,0,0.05)' : 'none' }}>
+    <header className={`header ${scrolled ? 'scrolled' : ''}`}>
       <div className="container header-container">
-        <Link to="/" className="logo" onClick={() => setIsMenuOpen(false)}>Estúdio Móveis.</Link>
+        <Link to="/" className="logo" onClick={() => setIsMenuOpen(false)}>Estúdio Móveis</Link>
         
         <nav className={`nav-links ${isMenuOpen ? 'nav-active' : ''}`}>
           {categories.map(cat => (
@@ -56,7 +66,7 @@ export const Footer = () => {
       <div className="container">
         <div className="footer-grid">
           <div className="footer-col">
-            <h4>Estúdio Móveis.</h4>
+            <h4>Estúdio Móveis</h4>
             <p style={{ marginTop: '1rem', color: 'rgba(255,255,255,0.6)' }}>
               Design sofisticado, conforto inigualável. Transformando casas em lares com peças exclusivas.
             </p>
@@ -104,12 +114,9 @@ export const ProductCard = ({ id, title, description, image }) => {
       <div className="product-info">
         <h3 className="product-title">{title}</h3>
         <p className="product-desc">{description}</p>
-        <Link to={`/produto/${id}`} className="btn btn-outline" style={{ marginRight: '0.5rem' }}>
-          Detalhes
+        <Link to={`/produto/${id}`} className="btn btn-primary" style={{ width: '100%', padding: '0.8rem' }}>
+          Ver Detalhes
         </Link>
-        <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="btn btn-primary">
-          Consultar
-        </a>
       </div>
     </div>
   );

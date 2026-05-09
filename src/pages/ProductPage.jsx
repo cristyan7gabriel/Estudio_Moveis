@@ -1,16 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getProductById, categories } from '../data/products';
-import { WHATSAPP_LINK } from '../components/SharedComponents';
+import { WHATSAPP_LINK, getWhatsAppLink } from '../components/SharedComponents';
 import { ArrowLeft, MessageCircle, ShieldCheck, Truck } from 'lucide-react';
 
 export const ProductPage = () => {
   const { productId } = useParams();
   const product = getProductById(productId);
+  const [activeImage, setActiveImage] = useState('');
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [productId]);
+    if (product) {
+      setActiveImage(product.image);
+    }
+  }, [productId, product]);
 
   if (!product) {
     return (
@@ -21,6 +25,7 @@ export const ProductPage = () => {
   }
 
   const category = categories.find(c => c.id === product.categoryId);
+  const hasGallery = product.images && product.images.length > 0;
 
   return (
     <main style={{ minHeight: '80vh', paddingTop: '100px', paddingBottom: '4rem' }}>
@@ -31,8 +36,31 @@ export const ProductPage = () => {
         
         <div className="product-detail-grid">
           
-          <div style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden', boxShadow: 'var(--shadow-medium)' }}>
-            <img src={product.image} alt={product.title} style={{ width: '100%', height: 'auto', display: 'block' }} />
+          <div className="product-gallery">
+            <div style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden', boxShadow: 'var(--shadow-medium)', marginBottom: '1.5rem', backgroundColor: '#f0f0f0' }}>
+              <img src={activeImage} alt={product.title} style={{ width: '100%', height: 'auto', display: 'block', minHeight: '400px', objectFit: 'cover' }} />
+            </div>
+            
+            {hasGallery && (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(80px, 1fr))', gap: '1rem' }}>
+                {product.images.map((img, idx) => (
+                  <div 
+                    key={idx} 
+                    onClick={() => setActiveImage(img)}
+                    style={{ 
+                      borderRadius: 'var(--radius-sm)', 
+                      overflow: 'hidden', 
+                      cursor: 'pointer',
+                      border: activeImage === img ? '2px solid var(--color-accent)' : '2px solid transparent',
+                      transition: 'var(--transition-base)',
+                      aspectRatio: '1/1'
+                    }}
+                  >
+                    <img src={img} alt={`${product.title} ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
           
           <div className="product-detail-info">
@@ -51,8 +79,14 @@ export const ProductPage = () => {
             </p>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '3rem' }}>
-              <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ padding: '1rem', width: '100%' }}>
-                <MessageCircle size={20} /> Falar com Consultor
+              <a 
+                href={getWhatsAppLink(`Olá! Gostaria de mais informações sobre o produto: ${product.title}`)} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="btn btn-primary" 
+                style={{ padding: '1rem', width: '100%', backgroundColor: '#25D366', borderColor: '#25D366' }}
+              >
+                <MessageCircle size={20} /> Comprar Agora
               </a>
             </div>
             
