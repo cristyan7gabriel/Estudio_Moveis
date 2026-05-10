@@ -122,7 +122,7 @@ export const ProductPage = () => {
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: 'var(--color-text-muted)' }}>
                 <Truck size={20} style={{ color: 'var(--color-accent)' }} />
-                <span style={{ fontSize: '0.9rem' }}>Entrega especializada para todo o Brasil</span>
+                <span style={{ fontSize: '0.9rem' }}>Entrega especializada para Goiânia e Região</span>
               </div>
             </div>
           </div>
