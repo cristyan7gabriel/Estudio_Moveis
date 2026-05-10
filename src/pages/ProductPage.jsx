@@ -27,6 +27,8 @@ export const ProductPage = () => {
   const category = categories.find(c => c.id === product.categoryId);
   const hasGallery = product.images && product.images.length > 0;
 
+  const isVideo = (src) => src?.toLowerCase().endsWith('.mp4');
+
   return (
     <main style={{ minHeight: '80vh', paddingTop: '100px', paddingBottom: '4rem' }}>
       <div className="container">
@@ -38,7 +40,18 @@ export const ProductPage = () => {
           
           <div className="product-gallery">
             <div style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden', boxShadow: 'var(--shadow-medium)', marginBottom: '1.5rem', backgroundColor: '#f0f0f0' }}>
-              <img src={activeImage} alt={product.title} style={{ width: '100%', height: 'auto', display: 'block', minHeight: '400px', objectFit: 'cover' }} />
+              {isVideo(activeImage) ? (
+                <video 
+                  src={activeImage} 
+                  controls 
+                  autoPlay 
+                  muted 
+                  loop
+                  style={{ width: '100%', height: 'auto', display: 'block', minHeight: '400px', objectFit: 'cover' }} 
+                />
+              ) : (
+                <img src={activeImage} alt={product.title} style={{ width: '100%', height: 'auto', display: 'block', minHeight: '400px', objectFit: 'cover' }} />
+              )}
             </div>
             
             {hasGallery && (
@@ -53,10 +66,22 @@ export const ProductPage = () => {
                       cursor: 'pointer',
                       border: activeImage === img ? '2px solid var(--color-accent)' : '2px solid transparent',
                       transition: 'var(--transition-base)',
-                      aspectRatio: '1/1'
+                      aspectRatio: '1/1',
+                      position: 'relative'
                     }}
                   >
-                    <img src={img} alt={`${product.title} ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    {isVideo(img) ? (
+                      <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+                        <video src={img} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.2)' }}>
+                          <div style={{ width: '24px', height: '24px', borderRadius: '50%', border: '2px solid white', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <div style={{ width: 0, height: 0, borderTop: '5px solid transparent', borderBottom: '5px solid transparent', borderLeft: '8px solid white', marginLeft: '2px' }}></div>
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <img src={img} alt={`${product.title} ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    )}
                   </div>
                 ))}
               </div>
