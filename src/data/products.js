@@ -149,7 +149,7 @@ export const products = [
     title: 'Mesa de Jantar Barcelona',
     description: 'Mesa de jantar de 1,80x90 a 2,20x1,00.',
     longDescription: 'A Mesa de Jantar Barcelona apresenta dimensões generosas e design requintado, proporcionando charme e espaço para jantares inesquecíveis.',
-    image: '/images/Mesas/mesa-barcelona/whatsapp-image-2026-05-09-at-10.35.24.jpeg',
+    image: '/images/Mesas/mesa-barcelona/whatsapp-image-2026-05-09-at-10.35.24-1.jpeg',
     images: [
       '/images/Mesas/mesa-barcelona/whatsapp-image-2026-05-09-at-10.35.24.jpeg',
       '/images/Mesas/mesa-barcelona/1.890.jpeg',
