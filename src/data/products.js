@@ -129,17 +129,17 @@ export const products = [
     title: 'Mesa de Jantar com 06 Cadeiras',
     description: 'Conjunto completo com mesa de jantar e 06 cadeiras estofadas.',
     longDescription: 'Este conjunto de mesa de jantar com 06 cadeiras une o design clássico ao conforto contemporâneo. Ideal para reunir a família em momentos especiais, com acabamento refinado e materiais de alta durabilidade.',
-    image: '/images/Mesas/mesa-06-cadeiras/IMG_2108.jpg',
+    image: '/images/mesas/mesa-06-cadeiras/img_2108.jpg',
     images: [
-      '/images/Mesas/mesa-06-cadeiras/IMG_2108.jpg',
-      '/images/Mesas/mesa-06-cadeiras/IMG_2109.jpg',
-      '/images/Mesas/mesa-06-cadeiras/IMG_2110.jpg',
-      '/images/Mesas/mesa-06-cadeiras/IMG_2111.jpg',
-      '/images/Mesas/mesa-06-cadeiras/IMG_2112.jpg',
-      '/images/Mesas/mesa-06-cadeiras/IMG_2113.jpg',
-      '/images/Mesas/mesa-06-cadeiras/IMG_2114.jpg',
-      '/images/Mesas/mesa-06-cadeiras/IMG_2115.jpg',
-      '/images/Mesas/mesa-06-cadeiras/IMG_2116.jpg'
+      '/images/mesas/mesa-06-cadeiras/img_2108.jpg',
+      '/images/mesas/mesa-06-cadeiras/img_2109.jpg',
+      '/images/mesas/mesa-06-cadeiras/img_2110.jpg',
+      '/images/mesas/mesa-06-cadeiras/img_2111.jpg',
+      '/images/mesas/mesa-06-cadeiras/img_2112.jpg',
+      '/images/mesas/mesa-06-cadeiras/img_2113.jpg',
+      '/images/mesas/mesa-06-cadeiras/img_2114.jpg',
+      '/images/mesas/mesa-06-cadeiras/img_2115.jpg',
+      '/images/mesas/mesa-06-cadeiras/img_2116.jpg'
     ],
     price: 'Sob Consulta',
   },
@@ -149,15 +149,15 @@ export const products = [
     title: 'Mesa de Jantar Barcelona',
     description: 'Mesa de jantar de 1,80x90 a 2,20x1,00.',
     longDescription: 'A Mesa de Jantar Barcelona apresenta dimensões generosas e design requintado, proporcionando charme e espaço para jantares inesquecíveis.',
-    image: '/images/Mesas/mesa-barcelona/whatsapp-image-2026-05-09-at-10.35.24-1.jpeg',
+    image: '/images/mesas/mesa-barcelona/whatsapp-image-2026-05-09-at-10.35.24-1.jpeg',
     images: [
-      '/images/Mesas/mesa-barcelona/whatsapp-image-2026-05-09-at-10.35.24.jpeg',
-      '/images/Mesas/mesa-barcelona/1.890.jpeg',
-      '/images/Mesas/mesa-barcelona/2.450.jpeg',
-      '/images/Mesas/mesa-barcelona/whatsapp-image-2026-05-09-at-10.35.24-1.jpeg',
-      '/images/Mesas/mesa-barcelona/whatsapp-image-2026-05-09-at-10.35.24-2.jpeg',
-      '/images/Mesas/mesa-barcelona/whatsapp-image-2026-05-09-at-10.35.24-3.jpeg',
-      '/images/Mesas/mesa-barcelona/whatsapp-image-2026-05-09-at-10.35.24-4.jpeg'
+      '/images/mesas/mesa-barcelona/whatsapp-image-2026-05-09-at-10.35.24.jpeg',
+      '/images/mesas/mesa-barcelona/1.890.jpeg',
+      '/images/mesas/mesa-barcelona/2.450.jpeg',
+      '/images/mesas/mesa-barcelona/whatsapp-image-2026-05-09-at-10.35.24-1.jpeg',
+      '/images/mesas/mesa-barcelona/whatsapp-image-2026-05-09-at-10.35.24-2.jpeg',
+      '/images/mesas/mesa-barcelona/whatsapp-image-2026-05-09-at-10.35.24-3.jpeg',
+      '/images/mesas/mesa-barcelona/whatsapp-image-2026-05-09-at-10.35.24-4.jpeg'
     ],
     price: 'Sob Consulta',
   },
@@ -167,15 +167,15 @@ export const products = [
     title: 'Mesa de Jantar Denver',
     description: 'Mesa de 2,70m acompanhada de 10 cadeiras Liz.',
     longDescription: 'Conjunto imponente e moderno, a Mesa Denver acompanhada de 10 cadeiras Liz é ideal para grandes encontros e salas de jantar amplas.',
-    image: '/images/Mesas/mesa-denver/whatsapp-image-2026-05-09-at-10.35.23.jpeg',
+    image: '/images/mesas/mesa-denver/whatsapp-image-2026-05-09-at-10.35.23.jpeg',
     images: [
-      '/images/Mesas/mesa-denver/whatsapp-image-2026-05-09-at-10.35.23.jpeg',
-      '/images/Mesas/mesa-denver/3.60000.jpeg',
-      '/images/Mesas/mesa-denver/950000.jpeg',
-      '/images/Mesas/mesa-denver/whatsapp-image-2026-05-09-at-10.35.22.jpeg',
-      '/images/Mesas/mesa-denver/whatsapp-image-2026-05-09-at-10.35.22-3.jpeg',
-      '/images/Mesas/mesa-denver/whatsapp-image-2026-05-09-at-10.35.23-1.jpeg',
-      '/images/Mesas/mesa-denver/whatsapp-video-2026-05-07-at-09.03.17.mp4'
+      '/images/mesas/mesa-denver/whatsapp-image-2026-05-09-at-10.35.23.jpeg',
+      '/images/mesas/mesa-denver/3.60000.jpeg',
+      '/images/mesas/mesa-denver/950000.jpeg',
+      '/images/mesas/mesa-denver/whatsapp-image-2026-05-09-at-10.35.22.jpeg',
+      '/images/mesas/mesa-denver/whatsapp-image-2026-05-09-at-10.35.22-3.jpeg',
+      '/images/mesas/mesa-denver/whatsapp-image-2026-05-09-at-10.35.23-1.jpeg',
+      '/images/mesas/mesa-denver/whatsapp-video-2026-05-07-at-09.03.17.mp4'
     ],
     price: 'Sob Consulta',
   },
@@ -185,11 +185,11 @@ export const products = [
     title: 'Mesa de Jantar Ilha Bela',
     description: 'Mesa 2,20x1,10 com cadeiras Pérola.',
     longDescription: 'A Mesa de Jantar Ilha Bela traz elegância, complementada pelo conforto supremo das cadeiras Pérola.',
-    image: '/images/Mesas/mesa-ilha-bela/IMG_1914.jpg',
+    image: '/images/mesas/mesa-ilha-bela/img_1914.jpg',
     images: [
-      '/images/Mesas/mesa-ilha-bela/IMG_1914.jpg',
-      '/images/Mesas/mesa-ilha-bela/IMG_1915.jpg',
-      '/images/Mesas/mesa-ilha-bela/IMG_1916.jpg'
+      '/images/mesas/mesa-ilha-bela/img_1914.jpg',
+      '/images/mesas/mesa-ilha-bela/img_1915.jpg',
+      '/images/mesas/mesa-ilha-bela/img_1916.jpg'
     ],
     price: 'Sob Consulta',
   },
@@ -199,9 +199,9 @@ export const products = [
     title: 'Mesa de Jantar Jade',
     description: 'Mesa 1,80x90 com cadeiras Florença.',
     longDescription: 'Beleza e sofisticação marcam a Mesa de Jantar Jade, perfeitamente harmonizada com as cadeiras Florença.',
-    image: '/images/Mesas/mesa-jade/InShot_20250520_102032887_Original.JPG',
+    image: '/images/mesas/mesa-jade/inshot_20250520_102032887_original.jpg',
     images: [
-      '/images/Mesas/mesa-jade/InShot_20250520_102032887_Original.JPG'
+      '/images/mesas/mesa-jade/inshot_20250520_102032887_original.jpg'
     ],
     price: 'Sob Consulta',
   },
@@ -211,10 +211,10 @@ export const products = [
     title: 'Mesa de Jantar Clássica',
     description: 'Design elegante para sua sala de jantar.',
     longDescription: 'Mesa de jantar de altíssimo padrão com design clássico, ideal para complementar um ambiente sofisticado e acolhedor.',
-    image: '/images/Mesas/mesa-jantar/IMG_2096.jpg',
+    image: '/images/mesas/mesa-jantar/img_2096.jpg',
     images: [
-      '/images/Mesas/mesa-jantar/IMG_2096.jpg',
-      '/images/Mesas/mesa-jantar/IMG_2097.jpg'
+      '/images/mesas/mesa-jantar/img_2096.jpg',
+      '/images/mesas/mesa-jantar/img_2097.jpg'
     ],
     price: 'Sob Consulta',
   },
@@ -224,16 +224,16 @@ export const products = [
     title: 'Mesa de Jantar Jasmim e Cadeiras Helena',
     description: 'Mesa 1,20x80 com 04 cadeiras Helena.',
     longDescription: 'Ideal para espaços otimizados, a Mesa Jasmim traz funcionalidade sem abrir mão do estilo, acompanhada pelas charmosas cadeiras Helena.',
-    image: '/images/Mesas/mesa-jasmim-helena/whatsapp-image-2026-05-09-at-10.35.25.jpeg',
+    image: '/images/mesas/mesa-jasmim-helena/whatsapp-image-2026-05-09-at-10.35.25.jpeg',
     images: [
-      '/images/Mesas/mesa-jasmim-helena/whatsapp-image-2026-05-09-at-10.35.25.jpeg',
-      '/images/Mesas/mesa-jasmim-helena/1.750.jpeg',
-      '/images/Mesas/mesa-jasmim-helena/1100.jpeg',
-      '/images/Mesas/mesa-jasmim-helena/1500.jpeg',
-      '/images/Mesas/mesa-jasmim-helena/250.jpeg',
-      '/images/Mesas/mesa-jasmim-helena/whatsapp-image-2026-05-09-at-10.35.24-6.jpeg',
-      '/images/Mesas/mesa-jasmim-helena/whatsapp-image-2026-05-09-at-10.35.25-1.jpeg',
-      '/images/Mesas/mesa-jasmim-helena/whatsapp-image-2026-05-09-at-10.35.25-2.jpeg'
+      '/images/mesas/mesa-jasmim-helena/whatsapp-image-2026-05-09-at-10.35.25.jpeg',
+      '/images/mesas/mesa-jasmim-helena/1.750.jpeg',
+      '/images/mesas/mesa-jasmim-helena/1100.jpeg',
+      '/images/mesas/mesa-jasmim-helena/1500.jpeg',
+      '/images/mesas/mesa-jasmim-helena/250.jpeg',
+      '/images/mesas/mesa-jasmim-helena/whatsapp-image-2026-05-09-at-10.35.24-6.jpeg',
+      '/images/mesas/mesa-jasmim-helena/whatsapp-image-2026-05-09-at-10.35.25-1.jpeg',
+      '/images/mesas/mesa-jasmim-helena/whatsapp-image-2026-05-09-at-10.35.25-2.jpeg'
     ],
     price: 'Sob Consulta',
   },
@@ -243,11 +243,11 @@ export const products = [
     title: 'Mesa de Jantar Jasmim e Cadeiras Lola',
     description: 'Mesa 1,20x80 com 04 cadeiras Lola.',
     longDescription: 'Conjunto versátil e charmoso, combinando a mesa compacta Jasmim com a leveza e o design único das cadeiras Lola.',
-    image: '/images/Mesas/mesa-jasmim-lola/IMG-20250412-WA0121_Original.JPG',
+    image: '/images/mesas/mesa-jasmim-lola/img-20250412-wa0121_original.jpg',
     images: [
-      '/images/Mesas/mesa-jasmim-lola/IMG-20250412-WA0121_Original.JPG',
-      '/images/Mesas/mesa-jasmim-lola/IMG-20250414-WA0154_Original.JPG',
-      '/images/Mesas/mesa-jasmim-lola/IMG-20250418-WA0060_Original.JPG'
+      '/images/mesas/mesa-jasmim-lola/img-20250412-wa0121_original.jpg',
+      '/images/mesas/mesa-jasmim-lola/img-20250414-wa0154_original.jpg',
+      '/images/mesas/mesa-jasmim-lola/img-20250418-wa0060_original.jpg'
     ],
     price: 'Sob Consulta',
   },
@@ -257,17 +257,17 @@ export const products = [
     title: 'Mesa de Jantar Oval Siena',
     description: 'Mesa de jantar oval 2,20x1,10 com cadeira Siena.',
     longDescription: 'Design fluido e convidativo. A mesa oval promove melhor circulação e interação, complementada pelas sofisticadas cadeiras Siena.',
-    image: '/images/Mesas/mesa-oval-siena/IMG_2109.jpg',
+    image: '/images/mesas/mesa-oval-siena/img_2109.jpg',
     images: [
-      '/images/Mesas/mesa-oval-siena/IMG_2109.jpg',
-      '/images/Mesas/mesa-oval-siena/conjunto-6399.jpg',
-      '/images/Mesas/mesa-oval-siena/IMG_2110.jpg',
-      '/images/Mesas/mesa-oval-siena/IMG_2111.jpg',
-      '/images/Mesas/mesa-oval-siena/IMG_2112.jpg',
-      '/images/Mesas/mesa-oval-siena/IMG_2113.jpg',
-      '/images/Mesas/mesa-oval-siena/IMG_2114.jpg',
-      '/images/Mesas/mesa-oval-siena/IMG_2115.jpg',
-      '/images/Mesas/mesa-oval-siena/IMG_2116.jpg'
+      '/images/mesas/mesa-oval-siena/img_2109.jpg',
+      '/images/mesas/mesa-oval-siena/conjunto-6399.jpg',
+      '/images/mesas/mesa-oval-siena/img_2110.jpg',
+      '/images/mesas/mesa-oval-siena/img_2111.jpg',
+      '/images/mesas/mesa-oval-siena/img_2112.jpg',
+      '/images/mesas/mesa-oval-siena/img_2113.jpg',
+      '/images/mesas/mesa-oval-siena/img_2114.jpg',
+      '/images/mesas/mesa-oval-siena/img_2115.jpg',
+      '/images/mesas/mesa-oval-siena/img_2116.jpg'
     ],
     price: 'Sob Consulta',
   },
@@ -277,10 +277,10 @@ export const products = [
     title: 'Mesa de Jantar Redonda Fênix',
     description: 'Tamanhos de 1,20m a 1,50m.',
     longDescription: 'Perfeita para criar ambientes intimistas e aconchegantes. A base em formato escultural torna a Mesa Fênix uma obra de arte.',
-    image: '/images/Mesas/mesa-redonda-fenix/1.600.jpeg',
+    image: '/images/mesas/mesa-redonda-fenix/1.600.jpeg',
     images: [
-      '/images/Mesas/mesa-redonda-fenix/1.600.jpeg',
-      '/images/Mesas/mesa-redonda-fenix/2.300.jpeg'
+      '/images/mesas/mesa-redonda-fenix/1.600.jpeg',
+      '/images/mesas/mesa-redonda-fenix/2.300.jpeg'
     ],
     price: 'Sob Consulta',
   },
@@ -290,11 +290,11 @@ export const products = [
     title: 'Mesa de Jantar Safira',
     description: 'Mesa 1,36x90 com 04 cadeiras estofadas.',
     longDescription: 'Conjunto moderno e versátil para o seu dia a dia. A mesa Safira se destaca por sua base geométrica robusta e tampo refinado.',
-    image: '/images/Mesas/mesa-safira/Screenshot_2026-02-06-10-32-43-075_com.whatsapp.w4b-edit_Original.jpg',
+    image: '/images/mesas/mesa-safira/screenshot_2026-02-06-10-32-43-075_com.whatsapp.w4b-edit_original.jpg',
     images: [
-      '/images/Mesas/mesa-safira/Screenshot_2026-02-06-10-32-43-075_com.whatsapp.w4b-edit_Original.jpg',
-      '/images/Mesas/mesa-safira/Screenshot_2026-02-06-10-33-14-707_com.whatsapp.w4b-edit_Original.jpg',
-      '/images/Mesas/mesa-safira/Screenshot_2026-02-06-10-33-38-560_com.whatsapp.w4b-edit_Original.jpg'
+      '/images/mesas/mesa-safira/screenshot_2026-02-06-10-32-43-075_com.whatsapp.w4b-edit_original.jpg',
+      '/images/mesas/mesa-safira/screenshot_2026-02-06-10-33-14-707_com.whatsapp.w4b-edit_original.jpg',
+      '/images/mesas/mesa-safira/screenshot_2026-02-06-10-33-38-560_com.whatsapp.w4b-edit_original.jpg'
     ],
     price: 'Sob Consulta',
   },
@@ -304,15 +304,15 @@ export const products = [
     title: 'Mesa de Jantar Siena',
     description: 'Mesa redonda 1,20m com 04 cadeiras Siena.',
     longDescription: 'Clássica e atemporal, a Mesa Siena é ideal para quem busca conforto e tradição, trazendo um toque amadeirado à decoração.',
-    image: '/images/Mesas/mesa-siena/IMG_2101.jpg',
+    image: '/images/mesas/mesa-siena/img_2101.jpg',
     images: [
-      '/images/Mesas/mesa-siena/IMG_2101.jpg',
-      '/images/Mesas/mesa-siena/IMG_2102.jpg',
-      '/images/Mesas/mesa-siena/IMG_2103.jpg',
-      '/images/Mesas/mesa-siena/IMG_2104.jpg',
-      '/images/Mesas/mesa-siena/IMG_2105.jpg',
-      '/images/Mesas/mesa-siena/IMG_2106.jpg',
-      '/images/Mesas/mesa-siena/IMG_2107.jpg'
+      '/images/mesas/mesa-siena/img_2101.jpg',
+      '/images/mesas/mesa-siena/img_2102.jpg',
+      '/images/mesas/mesa-siena/img_2103.jpg',
+      '/images/mesas/mesa-siena/img_2104.jpg',
+      '/images/mesas/mesa-siena/img_2105.jpg',
+      '/images/mesas/mesa-siena/img_2106.jpg',
+      '/images/mesas/mesa-siena/img_2107.jpg'
     ],
     price: 'Sob Consulta',
   },
