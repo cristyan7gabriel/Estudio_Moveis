@@ -8,6 +8,8 @@ export const ProductPage = () => {
   const { productId } = useParams();
   const product = getProductById(productId);
   const [activeImage, setActiveImage] = useState('');
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -29,6 +31,39 @@ export const ProductPage = () => {
 
   const isVideo = (src) => src?.toLowerCase().endsWith('.mp4');
 
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+
+    if ((isLeftSwipe || isRightSwipe) && hasGallery) {
+      const currentIndex = product.images.indexOf(activeImage);
+      if (currentIndex === -1) return;
+      
+      let newIndex;
+      if (isLeftSwipe) {
+        // swipe left (next image)
+        newIndex = currentIndex === product.images.length - 1 ? 0 : currentIndex + 1;
+      } else {
+        // swipe right (previous image)
+        newIndex = currentIndex === 0 ? product.images.length - 1 : currentIndex - 1;
+      }
+      setActiveImage(product.images[newIndex]);
+    }
+  };
+
   return (
     <main style={{ minHeight: '80vh', paddingTop: '100px', paddingBottom: '4rem' }}>
       <div className="container">
@@ -39,7 +74,12 @@ export const ProductPage = () => {
         <div className="product-detail-grid">
           
           <div className="product-gallery">
-            <div style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden', boxShadow: 'var(--shadow-medium)', marginBottom: '1.5rem', backgroundColor: '#f0f0f0' }}>
+            <div 
+              onTouchStart={onTouchStart}
+              onTouchMove={onTouchMove}
+              onTouchEnd={onTouchEnd}
+              style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden', boxShadow: 'var(--shadow-medium)', marginBottom: '1.5rem', backgroundColor: '#f0f0f0', touchAction: 'pan-y pinch-zoom' }}
+            >
               {isVideo(activeImage) ? (
                 <video 
                   src={activeImage} 
