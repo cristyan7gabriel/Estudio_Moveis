@@ -157,7 +157,7 @@ export const ProductPage = () => {
               {product.price}
             </p>
             
-            <p style={{ fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '3rem' }}>
+            <p style={{ fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '3rem', whiteSpace: 'pre-line' }}>
               {product.longDescription || product.description}
             </p>
             

@@ -1,8 +1,8 @@
 export const categories = [
   { id: 'mesas', name: 'Mesas', isHighlight: true },
+  { id: 'cadeiras', name: 'Cadeiras' },
   { id: 'sofas', name: 'Sofás' },
   { id: 'poltronas', name: 'Poltronas' },
-  { id: 'cadeiras', name: 'Cadeiras & Banquetas' },
   { id: 'area-externa', name: 'Área Externa' }
 ];
 
@@ -83,14 +83,14 @@ export const products = [
     price: 'Sob Consulta',
   },
 
-  // CADEIRAS & BANQUETAS
+  // CADEIRAS
   {
     id: 'cadeira-alice-palhinha',
     categoryId: 'cadeiras',
     title: 'Cadeira Alice com Palhinha',
     description: 'Encosto em palhinha natural com estrutura robusta.',
     longDescription: 'A Cadeira Alice combina a elegância da palhinha com uma estrutura resistente, trazendo charme e sofisticação para a sua sala de jantar.',
-    image: '/images/cadeiras/cadeira-alice-palhinha/img_1.jpg',
+    image: '/images/cadeiras/cadeira-alice-palhinha/img_5.webp',
     images: [
       '/images/cadeiras/cadeira-alice-palhinha/img_1.jpg',
       '/images/cadeiras/cadeira-alice-palhinha/img_2.jpg',
@@ -365,7 +365,22 @@ export const products = [
     categoryId: 'mesas',
     title: 'Mesa de Jantar Jasmim e Cadeiras Helena',
     description: 'Mesa 1,20x80 com 04 cadeiras Helena.',
-    longDescription: 'Ideal para espaços otimizados, a Mesa Jasmim traz funcionalidade sem abrir mão do estilo, acompanhada pelas charmosas cadeiras Helena.',
+    longDescription: `Características do Conjunto
+Mesa Roma
+Medidas: 1,20m x 0,80m
+Formato: Retangular
+Base: Madeira padrão Imbuia Mel
+Tampo: Vidro laqueado Off White
+Estilo: Moderno contemporâneo
+
+Cadeiras Helena
+Quantidade: 4 cadeiras
+Estrutura: Madeira
+Uso indicado: Ambientes internos
+Medidas das Cadeiras Helena
+Altura: 98 cm
+Largura: 44 cm
+Profundidade: 54 cm`,
     image: '/images/Mesas/mesa-jasmim-helena/whatsapp-image-2026-05-09-at-10.35.25.jpeg',
     images: [
       '/images/Mesas/mesa-jasmim-helena/whatsapp-image-2026-05-09-at-10.35.25.jpeg',
@@ -377,7 +392,7 @@ export const products = [
       '/images/Mesas/mesa-jasmim-helena/whatsapp-image-2026-05-09-at-10.35.25-1.jpeg',
       '/images/Mesas/mesa-jasmim-helena/whatsapp-image-2026-05-09-at-10.35.25-2.jpeg'
     ],
-    price: 'Sob Consulta',
+    price: 'R$ 1.750,00 conjunto e R$ 250,00 a cadeira',
   },
   {
     id: 'mesa-jasmim-lola',
@@ -509,20 +524,35 @@ export const products = [
     categoryId: 'mesas',
     title: 'Mesa Siena Redonda com Cadeiras Pérola',
     description: 'Mesa redonda 1,50m ou 1,35m com 04 cadeiras Pérola.',
-    longDescription: 'A Mesa Siena Redonda em tamanhos de 1,50m ou 1,35m acompanhada de 04 cadeiras Pérola é ideal para jantares intimistas com muito estilo e conforto.',
+    longDescription: 'Transforme sua sala de jantar com o Conjunto Mesa Siena Redonda 1,50m ou 1,35m + 4 Cadeiras Pérola, perfeito para quem busca sofisticação, conforto e funcionalidade no dia a dia.',
     image: '/images/Mesas/mesa-siena-redonda-perola/img_1.png',
     images: [
       '/images/Mesas/mesa-siena-redonda-perola/img_1.png',
       '/images/Mesas/mesa-siena-redonda-perola/img_2.png',
     ],
-    price: 'Sob Consulta',
+    price: 'R$ 3.600,00',
   },
   {
     id: 'mesa-siera-ilheus',
     categoryId: 'mesas',
     title: 'Mesa Siera com Cadeiras Ilhéus',
     description: 'Mesa 1,30x0,90 tampo MDF com vidro e 04 cadeiras Ilhéus.',
-    longDescription: 'A Mesa Siera com tampo em MDF e vidro nas dimensões 1,30x0,90 acompanha 04 cadeiras Ilhéus, unindo praticidade e elegância para o seu dia a dia.',
+    longDescription: `Características do Conjunto
+Mesa Roma
+Medidas: 1,30m x 0,90m
+Formato: Retangular
+Base: Madeira padrão Imbuia Mel
+Tampo: Vidro laqueado Off White 
+Estilo: Moderno contemporâneo
+
+Cadeiras Ilheus
+Quantidade: 4 cadeiras
+Estrutura: Madeira
+Uso indicado: Ambientes internos
+Medidas das Cadeiras Helena
+Altura: 96 cm
+Largura: 48 cm
+Profundidade: 62 cm`,
     image: '/images/Mesas/mesa-siera-ilheus/img_1.png',
     images: [
       '/images/Mesas/mesa-siera-ilheus/img_1.png',
@@ -530,7 +560,7 @@ export const products = [
       '/images/Mesas/mesa-siera-ilheus/img_3.png',
       '/images/Mesas/mesa-siera-ilheus/img_4.png',
     ],
-    price: 'Sob Consulta',
+    price: 'R$ 1.850,00',
   },
 
   // AREA EXTERNA
