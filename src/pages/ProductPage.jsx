@@ -10,6 +10,8 @@ export const ProductPage = () => {
   const [activeImage, setActiveImage] = useState('');
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
+  const [swipeOffset, setSwipeOffset] = useState(0);
+  const [isSwiping, setIsSwiping] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -36,13 +38,22 @@ export const ProductPage = () => {
   const onTouchStart = (e) => {
     setTouchEnd(null);
     setTouchStart(e.targetTouches[0].clientX);
+    setIsSwiping(true);
+    setSwipeOffset(0);
   };
 
   const onTouchMove = (e) => {
-    setTouchEnd(e.targetTouches[0].clientX);
+    const currentX = e.targetTouches[0].clientX;
+    setTouchEnd(currentX);
+    if (touchStart) {
+      setSwipeOffset(currentX - touchStart);
+    }
   };
 
   const onTouchEnd = () => {
+    setIsSwiping(false);
+    setSwipeOffset(0);
+
     if (!touchStart || !touchEnd) return;
     const distance = touchStart - touchEnd;
     const isLeftSwipe = distance > minSwipeDistance;
@@ -80,18 +91,25 @@ export const ProductPage = () => {
               onTouchEnd={onTouchEnd}
               style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden', boxShadow: 'var(--shadow-medium)', marginBottom: '1.5rem', backgroundColor: '#f0f0f0', touchAction: 'pan-y pinch-zoom' }}
             >
-              {isVideo(activeImage) ? (
-                <video 
-                  src={activeImage} 
-                  controls 
-                  autoPlay 
-                  muted 
-                  loop
-                  style={{ width: '100%', height: 'auto', display: 'block', minHeight: '400px', objectFit: 'cover' }} 
-                />
-              ) : (
-                <img src={activeImage} alt={product.title} style={{ width: '100%', height: 'auto', display: 'block', minHeight: '400px', objectFit: 'cover' }} />
-              )}
+              <div style={{
+                transform: `translateX(${swipeOffset}px)`,
+                transition: isSwiping ? 'none' : 'transform 0.3s ease-out',
+                width: '100%',
+                height: '100%'
+              }}>
+                {isVideo(activeImage) ? (
+                  <video 
+                    src={activeImage} 
+                    controls 
+                    autoPlay 
+                    muted 
+                    loop
+                    style={{ width: '100%', height: 'auto', display: 'block', minHeight: '400px', objectFit: 'cover' }} 
+                  />
+                ) : (
+                  <img src={activeImage} alt={product.title} style={{ width: '100%', height: 'auto', display: 'block', minHeight: '400px', objectFit: 'cover' }} />
+                )}
+              </div>
             </div>
             
             {hasGallery && (
