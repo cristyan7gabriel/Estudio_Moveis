@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ProductGrid, WHATSAPP_LINK, InstagramIcon } from '../components/SharedComponents';
+import { ProductGrid, WhatsAppDropdownBtn, InstagramIcon } from '../components/SharedComponents';
 import { categories, getProductsByCategory } from '../data/products';
 
 import { ArrowRight, Sofa, Armchair, Briefcase, BedDouble, Truck, CreditCard } from 'lucide-react';
@@ -83,9 +83,13 @@ const AmbientesPlanejados = () => {
             <p className="section-subtitle" style={{ margin: '0 0 2rem 0', textAlign: 'left', maxWidth: 'none' }}>
               Mais do que móveis, entregamos soluções completas. Nossa equipe de arquitetos projeta seu ambiente dos sonhos, unindo estética contemporânea e funcionalidade perfeita para o seu dia a dia.
             </p>
-            <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ alignSelf: 'flex-start' }}>
+            <WhatsAppDropdownBtn 
+              message="Olá, gostaria de falar com um consultor sobre ambientes planejados."
+              className="btn btn-primary" 
+              style={{ alignSelf: 'flex-start', color: '#fff' }}
+            >
               Falar com Consultor
-            </a>
+            </WhatsAppDropdownBtn>
           </div>
           <div className="planned-image-wrapper">
             <img src="/images/room_planned_1778203778795.png" alt="Ambiente Planejado" className="planned-image" />

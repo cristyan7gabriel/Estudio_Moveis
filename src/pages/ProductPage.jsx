@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getProductById, categories } from '../data/products';
-import { WHATSAPP_LINK, getWhatsAppLink } from '../components/SharedComponents';
+import { WhatsAppDropdownBtn } from '../components/SharedComponents';
 import { ArrowLeft, MessageCircle, ShieldCheck, Truck } from 'lucide-react';
 
 export const ProductPage = () => {
@@ -162,15 +162,13 @@ export const ProductPage = () => {
             </p>
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '3rem' }}>
-              <a 
-                href={getWhatsAppLink(`Olá! Gostaria de mais informações sobre o produto: ${product.title}`)} 
-                target="_blank" 
-                rel="noopener noreferrer" 
+              <WhatsAppDropdownBtn 
+                message={`Olá! Gostaria de mais informações sobre o produto: ${product.title}`}
                 className="btn btn-primary" 
-                style={{ padding: '1rem', width: '100%', backgroundColor: '#25D366', borderColor: '#25D366' }}
+                style={{ padding: '1rem', width: '100%', backgroundColor: '#25D366', borderColor: '#25D366', color: '#fff', display: 'flex', justifyContent: 'center' }}
               >
-                <MessageCircle size={20} /> Comprar Agora
-              </a>
+                <MessageCircle size={20} /> COMPRAR AGORA
+              </WhatsAppDropdownBtn>
             </div>
             
             <div style={{ borderTop: '1px solid rgba(0,0,0,0.1)', paddingTop: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>

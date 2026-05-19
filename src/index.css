@@ -180,23 +180,23 @@ button {
 
 /* Float WhatsApp */
 .floating-whatsapp {
-  position: fixed;
-  bottom: 3rem;
-  right: 3rem;
-  background-color: #25D366;
-  color: white;
-  width: 65px;
-  height: 65px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3);
-  z-index: 1000;
+  position: fixed !important;
+  bottom: 3rem !important;
+  right: 3rem !important;
+  background-color: #25D366 !important;
+  color: white !important;
+  width: 65px !important;
+  height: 65px !important;
+  border-radius: 50% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 10px 30px rgba(37, 211, 102, 0.3) !important;
+  z-index: 1000 !important;
 }
 
 .floating-whatsapp:hover {
-  transform: scale(1.1) translateY(-5px);
+  transform: scale(1.1) translateY(-5px) !important;
 }
 
 /* Component Styles */
@@ -439,6 +439,168 @@ button {
   color: var(--color-primary);
 }
 
+/* WhatsApp Dropdown Styles */
+.wa-dropdown-container {
+  position: relative;
+  display: inline-flex;
+}
+
+.wa-dropdown-menu {
+  position: absolute;
+  width: 250px;
+  background-color: #FFFFFF;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-medium);
+  border: 1px solid rgba(26,26,26,0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  z-index: 1200;
+  text-align: left;
+}
+
+.wa-dropdown-down {
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.wa-dropdown-up {
+  bottom: calc(100% + 15px);
+  right: 0;
+}
+
+.wa-dropdown-header {
+  padding: 1rem 1.25rem 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background-color: #F9FAFB;
+  border-bottom: 1px solid rgba(26,26,26,0.05);
+}
+
+.wa-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(26,26,26,0.03);
+  transition: var(--transition-base);
+  color: var(--color-primary);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.wa-dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.wa-dropdown-item:hover {
+  background-color: rgba(37, 211, 102, 0.05);
+  color: #25D366;
+}
+
+/* Search Bar Styles */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.search-container {
+  position: relative;
+  z-index: 1100;
+}
+
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  background-color: #FFFFFF;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  border: 1px solid rgba(26,26,26,0.1);
+  transition: var(--transition-base);
+}
+
+.search-input {
+  border: none;
+  padding: 0.6rem 1rem;
+  outline: none;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  width: 220px;
+  color: var(--color-primary);
+  background: transparent;
+}
+
+.search-btn {
+  background-color: var(--color-accent);
+  color: #FFFFFF;
+  padding: 0.65rem 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-base);
+}
+
+.search-btn:hover {
+  background-color: #dca700;
+}
+
+.search-dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  width: 320px;
+  background-color: #FFFFFF;
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-medium);
+  border: 1px solid rgba(26,26,26,0.05);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-result-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(26,26,26,0.05);
+  transition: var(--transition-base);
+  color: var(--color-primary);
+}
+
+.search-result-item:last-child {
+  border-bottom: none;
+}
+
+.search-result-item:hover {
+  background-color: rgba(26,26,26,0.02);
+}
+
+.search-result-thumb {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.search-result-title {
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.search-no-results {
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .planned-grid {
@@ -520,6 +682,17 @@ button {
   .nav-links .nav-link {
     color: var(--color-primary);
     font-size: 1.1rem;
+  }
+
+  .search-input {
+    width: 140px;
+    padding: 0.5rem 0.8rem;
+    font-size: 0.85rem;
+  }
+  
+  .search-dropdown {
+    width: 280px;
+    right: -40px; /* Adjust to center slightly relative to input */
   }
 
   .logo {

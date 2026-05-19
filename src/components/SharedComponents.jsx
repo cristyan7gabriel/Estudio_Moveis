@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { MessageCircle, Phone, MapPin, Sofa, Armchair, Briefcase, BedDouble, ArrowRight, Menu, X } from 'lucide-react';
-import { categories } from '../data/products';
+import { MessageCircle, Phone, MapPin, Sofa, Armchair, Briefcase, BedDouble, ArrowRight, Menu, X, Search } from 'lucide-react';
+import { categories, products } from '../data/products';
 
-export const WHATSAPP_PHONE = "556292421294";
-export const getWhatsAppLink = (message) => `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
-export const WHATSAPP_LINK = getWhatsAppLink("Olá, gostaria de falar com um consultor do Estúdio Móveis.");
+export const WHATSAPP_PHONE_POLYANA = "556292421294";
+export const WHATSAPP_PHONE_VERONICA = "5562982176675";
+export const getWhatsAppLink = (message, phone = WHATSAPP_PHONE_POLYANA) => `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+export const WHATSAPP_LINK = getWhatsAppLink("Olá, gostaria de falar com um consultor do Estúdio Móveis.", WHATSAPP_PHONE_POLYANA);
 export const INSTAGRAM_LINK = "https://www.instagram.com/estudiomoveisdecor";
 
 export const InstagramIcon = ({ size = 24 }) => (
@@ -15,6 +16,65 @@ export const InstagramIcon = ({ size = 24 }) => (
     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
   </svg>
 );
+
+export const SearchBar = () => {
+  const [query, setQuery] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
+
+  // Filter products when query changes
+  const results = query.trim() === '' 
+    ? [] 
+    : products.filter(p => p.title && p.title.toLowerCase().includes(query.toLowerCase())).slice(0, 5);
+
+  return (
+    <div className="search-container">
+      <div className="search-wrapper">
+        <input 
+          type="text" 
+          className="search-input" 
+          placeholder="Pesquisar..." 
+          value={query}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            setIsOpen(true);
+          }}
+          onFocus={() => {
+            if (query.trim() !== '') setIsOpen(true);
+          }}
+          onBlur={() => {
+            setTimeout(() => setIsOpen(false), 200);
+          }}
+        />
+        <button className="search-btn" aria-label="Pesquisar">
+          <Search size={18} />
+        </button>
+      </div>
+      
+      {isOpen && query.trim() !== '' && (
+        <div className="search-dropdown">
+          {results.length > 0 ? (
+            results.map(prod => (
+              <Link 
+                key={prod.id} 
+                to={`/produto/${prod.id}`}
+                className="search-result-item"
+                onClick={() => {
+                  setIsOpen(false);
+                  setQuery('');
+                }}
+              >
+                <img src={prod.image || (prod.images && prod.images[0])} alt={prod.title} className="search-result-thumb" />
+                <span className="search-result-title">{prod.title}</span>
+              </Link>
+            ))
+          ) : (
+            <div className="search-no-results">Nenhum produto encontrado</div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
 
 export const Header = () => {
   const [scrolled, setScrolled] = useState(false);
@@ -52,9 +112,12 @@ export const Header = () => {
           ))}
         </nav>
 
-        <button className={`mobile-menu-btn ${isMenuOpen ? 'active' : ''}`} onClick={() => setIsMenuOpen(!isMenuOpen)}>
-          {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
-        </button>
+        <div className="header-actions">
+          <SearchBar />
+          <button className={`mobile-menu-btn ${isMenuOpen ? 'active' : ''}`} onClick={() => setIsMenuOpen(!isMenuOpen)}>
+            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
+          </button>
+        </div>
       </div>
     </header>
   );
@@ -97,11 +160,83 @@ export const Footer = () => {
   );
 };
 
+export const WhatsAppDropdownBtn = ({ message, children, className = "", direction = "down", style = {} }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef(null);
+  const isFloating = className.includes('floating-whatsapp');
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (containerRef.current && !containerRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
+  if (isFloating) {
+    return (
+      <div 
+        ref={containerRef}
+        className={`wa-dropdown-container ${className}`} 
+        onClick={(e) => { e.preventDefault(); setIsOpen(!isOpen); }} 
+        style={{ cursor: 'pointer', ...style }}
+      >
+        {children}
+        {isOpen && (
+          <div className={`wa-dropdown-menu wa-dropdown-${direction}`} onClick={(e) => e.stopPropagation()}>
+            <div className="wa-dropdown-header">Falar com:</div>
+            <a href={getWhatsAppLink(message, WHATSAPP_PHONE_POLYANA)} target="_blank" rel="noopener noreferrer" className="wa-dropdown-item">
+              <MessageCircle size={18} /> Vendedora Polyana
+            </a>
+            <a href={getWhatsAppLink(message, WHATSAPP_PHONE_VERONICA)} target="_blank" rel="noopener noreferrer" className="wa-dropdown-item">
+              <MessageCircle size={18} /> Vendedora Veronica
+            </a>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  return (
+    <div ref={containerRef} className="wa-dropdown-container" style={{ display: 'inline-block', width: style.width || 'auto', alignSelf: style.alignSelf || 'auto' }}>
+      <button 
+        type="button"
+        className={className} 
+        onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsOpen(!isOpen); }} 
+        style={{ cursor: 'pointer', ...style, margin: 0 }}
+      >
+        {children}
+      </button>
+      {isOpen && (
+        <div className={`wa-dropdown-menu wa-dropdown-${direction}`} onClick={(e) => e.stopPropagation()}>
+          <div className="wa-dropdown-header">Falar com:</div>
+          <a href={getWhatsAppLink(message, WHATSAPP_PHONE_POLYANA)} target="_blank" rel="noopener noreferrer" className="wa-dropdown-item">
+            <MessageCircle size={18} /> Vendedora Polyana
+          </a>
+          <a href={getWhatsAppLink(message, WHATSAPP_PHONE_VERONICA)} target="_blank" rel="noopener noreferrer" className="wa-dropdown-item">
+            <MessageCircle size={18} /> Vendedora Veronica
+          </a>
+        </div>
+      )}
+    </div>
+  );
+};
+
 export const FloatingWhatsApp = () => {
   return (
-    <a href={WHATSAPP_LINK} target="_blank" rel="noopener noreferrer" className="floating-whatsapp" aria-label="WhatsApp">
+    <WhatsAppDropdownBtn 
+      message="Olá, gostaria de falar com um consultor do Estúdio Móveis." 
+      className="floating-whatsapp"
+      direction="up"
+    >
       <MessageCircle size={32} />
-    </a>
+    </WhatsAppDropdownBtn>
   );
 };
 
