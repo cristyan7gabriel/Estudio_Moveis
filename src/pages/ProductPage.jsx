@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getProductById, categories } from '../data/products';
 import { WhatsAppDropdownBtn } from '../components/SharedComponents';
-import { ArrowLeft, MessageCircle, ShieldCheck, Truck } from 'lucide-react';
+import { ArrowLeft, MessageCircle, ShieldCheck, Truck, ChevronDown, ChevronUp } from 'lucide-react';
 
 export const ProductPage = () => {
   const { productId } = useParams();
@@ -12,6 +12,8 @@ export const ProductPage = () => {
   const [touchEnd, setTouchEnd] = useState(null);
   const [swipeOffset, setSwipeOffset] = useState(0);
   const [isSwiping, setIsSwiping] = useState(false);
+  const [isDescExpanded, setIsDescExpanded] = useState(false);
+  const [isSpecsExpanded, setIsSpecsExpanded] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -157,9 +159,161 @@ export const ProductPage = () => {
               {product.price}
             </p>
             
-            <p style={{ fontSize: '1.1rem', lineHeight: '1.8', marginBottom: '3rem', whiteSpace: 'pre-line' }}>
-              {product.longDescription || product.description}
-            </p>
+            {(() => {
+              const descText = product.longDescription || product.description || '';
+              const shouldTruncateDesc = descText.length > 220;
+              const displayedDesc = (!isDescExpanded && shouldTruncateDesc)
+                ? `${descText.substring(0, 220)}...`
+                : descText;
+
+              return (
+                <p style={{ fontSize: '1.1rem', lineHeight: '1.8', marginBottom: shouldTruncateDesc ? '1.5rem' : '2.5rem', whiteSpace: 'pre-line' }}>
+                  {displayedDesc}
+                  {shouldTruncateDesc && (
+                    <button 
+                      onClick={() => setIsDescExpanded(!isDescExpanded)}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: 'var(--color-accent)',
+                        fontWeight: 'bold',
+                        cursor: 'pointer',
+                        marginLeft: '0.5rem',
+                        textDecoration: 'underline',
+                        fontSize: '1rem',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '2px',
+                        padding: 0
+                      }}
+                    >
+                      {isDescExpanded ? 'Ver menos' : 'Ver mais'}
+                      {isDescExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                    </button>
+                  )}
+                </p>
+              );
+            })()}
+
+            {(() => {
+              const hasSpecs = product.especificacoes_mesa || product.especificacoes_cadeira;
+              if (!hasSpecs) return null;
+
+              const renderSpecList = (specs) => {
+                if (!specs) return null;
+                return (
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.8rem 1.5rem', margin: '0.5rem 0' }}>
+                    {Object.entries(specs).map(([key, val]) => {
+                      if (val === null || val === undefined) return null;
+                      let label = key
+                        .replace(/_/g, ' ')
+                        .replace(/\b\w/g, c => c.toUpperCase());
+                      
+                      // Nice translations
+                      if (label === 'Formato') label = 'Formato';
+                      else if (label === 'Medida' || label === 'Medidas' || label === 'Medida Diâmetro' || label === 'Dimensoes') label = 'Dimensões';
+                      else if (label === 'Tampo' || label === 'Material Tampo') label = 'Acabamento do Tampo';
+                      else if (label === 'Base') label = 'Estrutura da Base';
+                      else if (label === 'Modelo') label = 'Modelo';
+                      else if (label === 'Quantidade') label = 'Quantidade';
+                      else if (label === 'Estrutura') label = 'Estrutura';
+                      else if (label === 'Tecido' || label === 'Revestimento' || label === 'Opcoes Tecido') label = 'Revestimento / Tecido';
+                      else if (label === 'Uso Indicado') label = 'Ambiente Indicado';
+                      else if (label === 'Capacidade') label = 'Capacidade';
+                      else if (label === 'Material') label = 'Material';
+                      else if (label === 'Cor') label = 'Cor';
+                      else if (label === 'Estilo') label = 'Estilo';
+                      else if (label === 'Altura') label = 'Altura';
+                      else if (label === 'Largura') label = 'Largura';
+                      else if (label === 'Profundidade') label = 'Profundidade';
+
+                      let displayVal = '';
+                      if (val && typeof val === 'object' && !Array.isArray(val)) {
+                        displayVal = Object.entries(val)
+                          .map(([k, v]) => `${k.replace(/\b\w/g, c => c.toUpperCase())}: ${v}`)
+                          .join(' | ');
+                      } else if (Array.isArray(val)) {
+                        displayVal = val.join(', ');
+                      } else {
+                        displayVal = String(val);
+                      }
+
+                      return (
+                        <div key={key} style={{ display: 'flex', flexDirection: 'column', borderBottom: '1px solid rgba(0,0,0,0.06)', paddingBottom: '0.5rem' }}>
+                          <span style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', fontWeight: '500' }}>{label}</span>
+                          <span style={{ fontSize: '0.95rem', color: 'var(--color-text)', fontWeight: '600', marginTop: '2px' }}>{displayVal}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                );
+              };
+
+              return (
+                <div style={{
+                  marginBottom: '2.5rem',
+                  backgroundColor: '#fcfaf6',
+                  border: '1px solid rgba(212, 175, 55, 0.25)',
+                  borderRadius: 'var(--radius-md)',
+                  padding: '1.25rem 1.5rem',
+                  boxShadow: '0 4px 15px rgba(0,0,0,0.015)'
+                }}>
+                  <div 
+                    onClick={() => setIsSpecsExpanded(!isSpecsExpanded)}
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      cursor: 'pointer',
+                      userSelect: 'none'
+                    }}
+                  >
+                    <h3 style={{ fontSize: '1.15rem', fontWeight: 'bold', color: 'var(--color-text)', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <ShieldCheck size={20} style={{ color: 'var(--color-accent)' }} /> Especificações Técnicas
+                    </h3>
+                    <button
+                      type="button"
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        color: 'var(--color-accent)',
+                        fontWeight: 'bold',
+                        cursor: 'pointer',
+                        fontSize: '0.95rem',
+                        padding: 0,
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '2px'
+                      }}
+                    >
+                      {isSpecsExpanded ? 'Ocultar' : 'Ver mais'}
+                      {isSpecsExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                    </button>
+                  </div>
+
+                  {isSpecsExpanded && (
+                    <div style={{ marginTop: '1.5rem' }}>
+                      {product.especificacoes_mesa && (
+                        <div style={{ marginBottom: '1.5rem' }}>
+                          <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold', color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid rgba(212, 175, 55, 0.3)', paddingBottom: '0.3rem', marginBottom: '0.8rem' }}>
+                            Especificações da Mesa
+                          </h4>
+                          {renderSpecList(product.especificacoes_mesa)}
+                        </div>
+                      )}
+                      {product.especificacoes_cadeira && (
+                        <div>
+                          <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold', color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid rgba(212, 175, 55, 0.3)', paddingBottom: '0.3rem', marginBottom: '0.8rem' }}>
+                            Especificações das Cadeiras
+                          </h4>
+                          {renderSpecList(product.especificacoes_cadeira)}
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })()}
             
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '3rem' }}>
               <WhatsAppDropdownBtn 

@@ -240,7 +240,7 @@ export const FloatingWhatsApp = () => {
   );
 };
 
-export const ProductCard = ({ id, title, description, image }) => {
+export const ProductCard = ({ id, title, description, image, price }) => {
   return (
     <div className="product-card">
       <Link to={`/produto/${id}`} className="product-image-container" style={{ display: 'block' }}>
@@ -248,7 +248,16 @@ export const ProductCard = ({ id, title, description, image }) => {
       </Link>
       <div className="product-info">
         <h3 className="product-title">{title}</h3>
-        <p className="product-desc">{description}</p>
+        <p className="product-desc" style={{ marginBottom: '1rem' }}>{description}</p>
+        <p style={{ 
+          fontSize: '1.2rem', 
+          fontWeight: '600', 
+          color: 'var(--color-primary)', 
+          marginBottom: '1.5rem',
+          fontFamily: 'var(--font-sans)'
+        }}>
+          {price || 'Sob Consulta'}
+        </p>
         <Link to={`/produto/${id}`} className="btn btn-primary" style={{ width: '100%', padding: '0.8rem' }}>
           Ver Detalhes
         </Link>
