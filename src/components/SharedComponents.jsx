@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { MessageCircle, Phone, MapPin, Sofa, Armchair, Briefcase, BedDouble, ArrowRight, Menu, X, Search } from 'lucide-react';
-import { categories, products } from '../data/products';
+import { ProductsContext } from '../context/ProductsContext';
 
 export const WHATSAPP_PHONE_POLYANA = "556292421294";
 export const WHATSAPP_PHONE_VERONICA = "5562982176675";
@@ -18,6 +18,7 @@ export const InstagramIcon = ({ size = 24 }) => (
 );
 
 export const SearchBar = () => {
+  const { products } = useContext(ProductsContext);
   const [query, setQuery] = useState('');
   const [isOpen, setIsOpen] = useState(false);
 
@@ -77,6 +78,7 @@ export const SearchBar = () => {
 };
 
 export const Header = () => {
+  const { categories } = useContext(ProductsContext);
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -124,6 +126,7 @@ export const Header = () => {
 };
 
 export const Footer = () => {
+  const { categories } = useContext(ProductsContext);
   return (
     <footer className="footer">
       <div className="container">
