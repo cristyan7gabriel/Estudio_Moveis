@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { ProductGrid, WhatsAppDropdownBtn, InstagramIcon } from '../components/SharedComponents';
-import { categories, getProductsByCategory } from '../data/products';
+import { ProductsContext } from '../context/ProductsContext';
 
 import { ArrowRight, Sofa, Armchair, Briefcase, BedDouble, Truck, CreditCard } from 'lucide-react';
+
+// Hero and AmbientesPlanejados components remain the same
 
 const Hero = () => {
   return (
@@ -101,6 +103,8 @@ const AmbientesPlanejados = () => {
 };
 
 export const Home = () => {
+  const { categories, getProductsByCategory } = useContext(ProductsContext);
+
   return (
     <main>
       <Hero />

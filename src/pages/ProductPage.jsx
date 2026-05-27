@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getProductById, categories } from '../data/products';
+import { ProductsContext } from '../context/ProductsContext';
 import { WhatsAppDropdownBtn } from '../components/SharedComponents';
 import { ArrowLeft, MessageCircle, ShieldCheck, Truck, ChevronDown, ChevronUp } from 'lucide-react';
 
 export const ProductPage = () => {
   const { productId } = useParams();
+  const { categories, getProductById } = useContext(ProductsContext);
   const product = getProductById(productId);
   const [activeImage, setActiveImage] = useState('');
   const [touchStart, setTouchStart] = useState(null);
@@ -196,7 +197,7 @@ export const ProductPage = () => {
             })()}
 
             {(() => {
-              const hasSpecs = product.especificacoes_mesa || product.especificacoes_cadeira;
+              const hasSpecs = product.especificacoes_mesa || product.especificacoes_cadeira || product.especificacoes_cozinha;
               if (!hasSpecs) return null;
 
               const renderSpecList = (specs) => {
@@ -302,11 +303,19 @@ export const ProductPage = () => {
                         </div>
                       )}
                       {product.especificacoes_cadeira && (
-                        <div>
+                        <div style={{ marginBottom: '1.5rem' }}>
                           <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold', color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid rgba(212, 175, 55, 0.3)', paddingBottom: '0.3rem', marginBottom: '0.8rem' }}>
                             Especificações das Cadeiras
                           </h4>
                           {renderSpecList(product.especificacoes_cadeira)}
+                        </div>
+                      )}
+                      {product.especificacoes_cozinha && (
+                        <div>
+                          <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold', color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid rgba(212, 175, 55, 0.3)', paddingBottom: '0.3rem', marginBottom: '0.8rem' }}>
+                            Especificações da Cozinha
+                          </h4>
+                          {renderSpecList(product.especificacoes_cozinha)}
                         </div>
                       )}
                     </div>

@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { ProductGrid } from '../components/SharedComponents';
-import { getProductsByCategory, categories } from '../data/products';
+import { ProductsContext } from '../context/ProductsContext';
 
 export const CategoryPage = () => {
   const { categoryId } = useParams();
+  const { categories, getProductsByCategory } = useContext(ProductsContext);
+  
   const products = getProductsByCategory(categoryId);
   const category = categories.find(c => c.id === categoryId);
 
