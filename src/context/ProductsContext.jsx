@@ -19,7 +19,7 @@ export const ProductsProvider = ({ children }) => {
     const fetchSanityData = async () => {
       try {
         const queryCategories = `*[_type == "category"]{
-          "id": id.current,
+          "id": _id,
           "name": name
         }`;
         
@@ -29,7 +29,7 @@ export const ProductsProvider = ({ children }) => {
           description,
           longDescription,
           price,
-          "categoryId": categoryId->id.current,
+          "categoryId": categoryId->_id,
           "image": image.asset->url,
           "images": images[].asset->url,
           especificacoes_mesa,
