@@ -197,7 +197,7 @@ export const ProductPage = () => {
             })()}
 
             {(() => {
-              const hasSpecs = product.especificacoes_mesa || product.especificacoes_cadeira || product.especificacoes_cozinha;
+              const hasSpecs = product.especificacoes_mesa || product.especificacoes_cadeira || product.especificacoes_cozinha || product.especificacoes_gerais;
               if (!hasSpecs) return null;
 
               const renderSpecList = (specs) => {
@@ -205,7 +205,20 @@ export const ProductPage = () => {
                 return (
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.8rem 1.5rem', margin: '0.5rem 0' }}>
                     {Object.entries(specs).map(([key, val]) => {
-                      if (val === null || val === undefined) return null;
+                      if (val === null || val === undefined || key === '_type' || key === '_key') return null;
+
+                      if (key === 'atributos_extras' && Array.isArray(val)) {
+                        return val.map((extra, idx) => {
+                          if (!extra.chave) return null;
+                          return (
+                            <div key={`extra-${idx}`} style={{ display: 'flex', flexDirection: 'column', borderBottom: '1px solid rgba(0,0,0,0.06)', paddingBottom: '0.5rem' }}>
+                              <span style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', fontWeight: '500' }}>{extra.chave}</span>
+                              <span style={{ fontSize: '0.95rem', color: 'var(--color-text)', fontWeight: '600', marginTop: '2px' }}>{extra.valor || '-'}</span>
+                            </div>
+                          );
+                        });
+                      }
+
                       let label = key
                         .replace(/_/g, ' ')
                         .replace(/\b\w/g, c => c.toUpperCase());
@@ -311,11 +324,19 @@ export const ProductPage = () => {
                         </div>
                       )}
                       {product.especificacoes_cozinha && (
-                        <div>
+                        <div style={{ marginBottom: '1.5rem' }}>
                           <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold', color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid rgba(212, 175, 55, 0.3)', paddingBottom: '0.3rem', marginBottom: '0.8rem' }}>
                             Especificações da Cozinha
                           </h4>
                           {renderSpecList(product.especificacoes_cozinha)}
+                        </div>
+                      )}
+                      {product.especificacoes_gerais && (
+                        <div>
+                          <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold', color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid rgba(212, 175, 55, 0.3)', paddingBottom: '0.3rem', marginBottom: '0.8rem' }}>
+                            Especificações do Produto
+                          </h4>
+                          {renderSpecList(product.especificacoes_gerais)}
                         </div>
                       )}
                     </div>
