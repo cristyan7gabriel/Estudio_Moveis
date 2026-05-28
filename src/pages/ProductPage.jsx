@@ -336,7 +336,21 @@ export const ProductPage = () => {
                           <h4 style={{ fontSize: '0.95rem', fontWeight: 'bold', color: 'var(--color-accent)', textTransform: 'uppercase', letterSpacing: '1px', borderBottom: '1px solid rgba(212, 175, 55, 0.3)', paddingBottom: '0.3rem', marginBottom: '0.8rem' }}>
                             Especificações do Produto
                           </h4>
-                          {renderSpecList(product.especificacoes_gerais)}
+                          {Array.isArray(product.especificacoes_gerais) ? (
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.8rem 1.5rem', margin: '0.5rem 0' }}>
+                              {product.especificacoes_gerais.map((spec, idx) => {
+                                if (!spec.chave) return null;
+                                return (
+                                  <div key={idx} style={{ display: 'flex', flexDirection: 'column', borderBottom: '1px solid rgba(0,0,0,0.06)', paddingBottom: '0.5rem' }}>
+                                    <span style={{ fontSize: '0.85rem', color: 'var(--color-text-muted)', fontWeight: '500' }}>{spec.chave}</span>
+                                    <span style={{ fontSize: '0.95rem', color: 'var(--color-text)', fontWeight: '600', marginTop: '2px' }}>{spec.valor || '-'}</span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          ) : (
+                            renderSpecList(product.especificacoes_gerais)
+                          )}
                         </div>
                       )}
                     </div>
