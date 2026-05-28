@@ -34,7 +34,8 @@ export const ProductsProvider = ({ children }) => {
           "images": images[].asset->url,
           especificacoes_mesa,
           especificacoes_cadeira,
-          especificacoes_cozinha
+          especificacoes_cozinha,
+          especificacoes_gerais
         }`;
 
         const [sanityCategories, sanityProducts] = await Promise.all([
