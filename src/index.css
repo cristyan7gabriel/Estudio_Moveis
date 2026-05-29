@@ -630,6 +630,51 @@ button {
 
 @media (max-width: 1024px) {
   .hero-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .hero-title-new {
+    font-size: 3.2rem;
+  }
+
+  .hero-carousel-main {
+    height: 450px;
+  }
+  
+  .hero-main-img {
+    width: 90%;
+    height: 90%;
+  }
+
+  .floating-card {
+    display: flex;
+    padding: 0.6rem;
+    max-width: 85%;
+  }
+
+  .floating-card.top-left {
+    top: 5px;
+    left: 5px;
+  }
+
+  .floating-card.bottom-right {
+    bottom: 5px;
+    right: 5px;
+  }
+
+  .floating-card.bottom-left {
+    bottom: 5px;
+    left: 5px !important;
+  }
+  
+  .fc-title {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-grid {
     grid-template-columns: 1fr;
     gap: 3rem;
   }
@@ -660,33 +705,8 @@ button {
     transform: translateY(-5px);
   }
   
-  .floating-card {
-    display: flex;
-    padding: 0.8rem;
-    max-width: 85%;
-  }
-
-  .floating-card.top-left {
-    top: 10px;
-    left: 10px;
-  }
-
-  .floating-card.bottom-right {
-    bottom: 10px;
-    right: 10px;
-  }
-
-  .floating-card.bottom-left {
-    bottom: 10px;
-    left: 10px !important;
-  }
-  
-  .fc-title {
-    font-size: 0.95rem;
-  }
-  
   .hero-carousel-main {
-    height: 400px;
+    height: 350px;
     width: 100%;
   }
   
