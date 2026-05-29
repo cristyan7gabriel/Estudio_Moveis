@@ -629,6 +629,20 @@ button {
 }
 
 @media (max-width: 1024px) {
+  .logo {
+    font-size: 1.4rem;
+    white-space: nowrap;
+  }
+
+  .nav-links {
+    gap: 1.5rem;
+  }
+
+  .nav-link {
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+  }
+
   .hero-grid {
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
