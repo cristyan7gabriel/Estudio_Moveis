@@ -1074,6 +1074,10 @@ button {
   color: var(--color-accent);
 }
 
+.mobile-only-link {
+  display: none;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .planned-grid {
@@ -1130,6 +1134,14 @@ button {
 
   .mobile-menu-btn {
     display: block;
+  }
+
+  .desktop-only-dropdown {
+    display: none !important;
+  }
+
+  .mobile-only-link {
+    display: block !important;
   }
 
   .nav-links {

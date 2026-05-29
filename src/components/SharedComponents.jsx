@@ -158,10 +158,24 @@ export const Header = () => {
           ))}
 
           {categories.filter(cat => !["cozinha", "cadeiras", "sala de jantar"].includes(cat.name.toLowerCase())).length > 0 && (
-            <NavDropdown 
-              categories={categories.filter(cat => !["cozinha", "cadeiras", "sala de jantar"].includes(cat.name.toLowerCase()))} 
-              setIsMenuOpen={setIsMenuOpen} 
-            />
+            <>
+              <div className="desktop-only-dropdown">
+                <NavDropdown 
+                  categories={categories.filter(cat => !["cozinha", "cadeiras", "sala de jantar"].includes(cat.name.toLowerCase()))} 
+                  setIsMenuOpen={setIsMenuOpen} 
+                />
+              </div>
+              {categories.filter(cat => !["cozinha", "cadeiras", "sala de jantar"].includes(cat.name.toLowerCase())).map(cat => (
+                <Link 
+                  key={cat.id} 
+                  to={`/categoria/${cat.id}`} 
+                  className={`nav-link mobile-only-link ${cat.isHighlight ? 'nav-link-highlight' : ''}`}
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {cat.name}
+                </Link>
+              ))}
+            </>
           )}
         </nav>
 
