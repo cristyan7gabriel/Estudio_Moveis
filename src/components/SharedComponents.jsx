@@ -77,6 +77,50 @@ export const SearchBar = () => {
   );
 };
 
+const NavDropdown = ({ categories, setIsMenuOpen }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (containerRef.current && !containerRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    };
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen]);
+
+  return (
+    <div ref={containerRef} className="nav-dropdown-container">
+      <button 
+        className="nav-link nav-dropdown-btn" 
+        onClick={(e) => { e.preventDefault(); setIsOpen(!isOpen); }}
+      >
+        Mais Seções ▼
+      </button>
+      {isOpen && (
+        <div className="nav-dropdown-menu">
+          {categories.map(cat => (
+            <Link 
+              key={cat.id} 
+              to={`/categoria/${cat.id}`} 
+              className={`nav-dropdown-item ${cat.isHighlight ? 'nav-link-highlight' : ''}`}
+              onClick={() => { setIsMenuOpen(false); setIsOpen(false); }}
+            >
+              {cat.name}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
 export const Header = () => {
   const { categories } = useContext(ProductsContext);
   const [scrolled, setScrolled] = useState(false);
@@ -102,7 +146,7 @@ export const Header = () => {
         <Link to="/" className="logo" onClick={() => setIsMenuOpen(false)}>Estúdio Móveis</Link>
         
         <nav className={`nav-links ${isMenuOpen ? 'nav-active' : ''}`}>
-          {categories.map(cat => (
+          {categories.filter(cat => ["cozinha", "cadeiras", "sala de jantar"].includes(cat.name.toLowerCase())).map(cat => (
             <Link 
               key={cat.id} 
               to={`/categoria/${cat.id}`} 
@@ -112,6 +156,13 @@ export const Header = () => {
               {cat.name}
             </Link>
           ))}
+
+          {categories.filter(cat => !["cozinha", "cadeiras", "sala de jantar"].includes(cat.name.toLowerCase())).length > 0 && (
+            <NavDropdown 
+              categories={categories.filter(cat => !["cozinha", "cadeiras", "sala de jantar"].includes(cat.name.toLowerCase()))} 
+              setIsMenuOpen={setIsMenuOpen} 
+            />
+          )}
         </nav>
 
         <div className="header-actions">
@@ -132,26 +183,35 @@ export const Footer = () => {
       <div className="container">
         <div className="footer-grid">
           <div className="footer-col">
-            <h4>Estúdio Móveis</h4>
+            <h4 style={{ color: 'var(--color-accent)' }}>Estúdio Móveis</h4>
             <p style={{ marginTop: '1rem', color: 'rgba(255,255,255,0.6)' }}>
               Design sofisticado, conforto inigualável. Transformando casas em lares com peças exclusivas.
             </p>
           </div>
           <div className="footer-col">
-            <h4>Categorias</h4>
-            {categories.map(cat => (
-              <Link key={cat.id} to={`/categoria/${cat.id}`}>{cat.name}</Link>
-            ))}
+            <h4 style={{ color: 'var(--color-accent)' }}>Categorias</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1rem' }}>
+              {categories.map(cat => (
+                <Link key={cat.id} to={`/categoria/${cat.id}`} style={{ color: 'rgba(255,255,255,0.8)', textDecoration: 'none' }}>
+                  {cat.name}
+                </Link>
+              ))}
+            </div>
           </div>
           <div className="footer-col">
-            <h4>Contato</h4>
-            <p><MessageCircle size={18} /> WhatsApp: (62) 9242-1294</p>
-            <p><Phone size={18} /> Telefone: (62) 9242-1294</p>
-            <p><MapPin size={18} /> Av. Principal, Goiânia - GO</p>
-            <div style={{ marginTop: '1rem' }}>
-              <a href={INSTAGRAM_LINK} target="_blank" rel="noopener noreferrer">
-                <InstagramIcon size={18} /> @estudiomoveisdecor
-              </a>
+            <h4 style={{ color: 'var(--color-accent)' }}>Contato</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', marginTop: '1rem' }}>
+              <p style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: 0, whiteSpace: 'nowrap' }}>
+                <MessageCircle size={18} color="var(--color-accent)" /> WhatsApp: (62) 9242-1294
+              </p>
+              <p style={{ display: 'flex', alignItems: 'center', gap: '8px', margin: 0, whiteSpace: 'nowrap' }}>
+                <Phone size={18} color="var(--color-accent)" /> Telefone: (62) 9242-1294
+              </p>
+              <div style={{ marginTop: '0.5rem' }}>
+                <a href={INSTAGRAM_LINK} target="_blank" rel="noopener noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'rgba(255,255,255,0.8)', textDecoration: 'none' }}>
+                  <InstagramIcon size={18} color="var(--color-accent)" /> @estudiomoveisdecor
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -257,7 +317,8 @@ export const ProductCard = ({ id, title, description, image, price }) => {
           fontWeight: '600', 
           color: 'var(--color-primary)', 
           marginBottom: '1.5rem',
-          fontFamily: 'var(--font-sans)'
+          fontFamily: 'var(--font-sans)',
+          marginTop: 'auto'
         }}>
           {price || 'Sob Consulta'}
         </p>
@@ -272,11 +333,13 @@ export const ProductCard = ({ id, title, description, image, price }) => {
 export const ProductGrid = ({ title, subtitle, products }) => {
   return (
     <section className="container section">
-      <div className="section-header">
-        <div className="section-title-line"></div>
-        <h2 className="section-title">{title}</h2>
-        <div className="section-title-line"></div>
-      </div>
+      {title && (
+        <div className="section-header">
+          <div className="section-title-line"></div>
+          <h2 className="section-title">{title}</h2>
+          <div className="section-title-line"></div>
+        </div>
+      )}
       {subtitle && <p className="section-subtitle text-center" style={{ marginTop: '-1.5rem', marginBottom: '3rem' }}>{subtitle}</p>}
       <div className="product-grid">
         {products.map((prod) => (

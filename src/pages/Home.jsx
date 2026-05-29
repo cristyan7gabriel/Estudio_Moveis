@@ -1,70 +1,197 @@
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { ProductGrid, WhatsAppDropdownBtn, InstagramIcon } from '../components/SharedComponents';
 import { ProductsContext } from '../context/ProductsContext';
 
-import { ArrowRight, Sofa, Armchair, Briefcase, BedDouble, Truck, CreditCard } from 'lucide-react';
-
-// Hero and AmbientesPlanejados components remain the same
+import { ArrowRight, Sofa, Armchair, Briefcase, BedDouble, Truck, CreditCard, Star, ShieldCheck } from 'lucide-react';
 
 const Hero = () => {
-  return (
-    <section className="hero" style={{ backgroundImage: 'url("/images/Background.jpeg")', position: 'relative' }}>
-      <div className="hero-content" style={{ maxWidth: '1000px', width: '100%', padding: '0 2rem' }}>
-        <h1 className="hero-title" style={{ 
-          color: '#F4F1EB', 
-          fontWeight: '400', 
-          lineHeight: '1.2', 
-          marginBottom: '1.5rem',
-          textShadow: '0 4px 30px rgba(0,0,0,0.7), 0 0 10px rgba(0,0,0,0.5)'
-        }}>
-          Design que Inspira<br/>Conforto & Estilo
-        </h1>
-        <p className="hero-subtitle" style={{ 
-          color: '#E8E5DF', 
-          fontWeight: '300', 
-          fontSize: '1.1rem', 
-          maxWidth: '700px', 
-          margin: '0 auto 2.5rem',
-          textShadow: '0 2px 20px rgba(0,0,0,0.8), 0 0 5px rgba(0,0,0,0.5)'
-        }}>
-          Criamos ambientes atemporais que refletem sua personalidade<br/>e elevam o morar contemporâneo.
-        </p>
-        <a href="#destaques" className="btn" style={{ 
-          backgroundColor: '#2D3E33', 
-          color: '#F4F1EB', 
-          borderRadius: '8px',
-          padding: '1rem 2rem',
-          fontSize: '0.85rem',
-          letterSpacing: '0.1em',
-          border: '1px solid rgba(244, 241, 235, 0.2)',
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '0.75rem',
-          textTransform: 'uppercase'
-        }}>
-          <InstagramIcon size={18} /> Explorar Coleção <ArrowRight size={18} />
-        </a>
-      </div>
+  const { categories, getProductsByCategory } = useContext(ProductsContext);
+  const navigate = useNavigate();
 
-      <div style={{ 
-        position: 'absolute', 
-        bottom: '2rem', 
-        left: '0', 
-        width: '100%', 
-        display: 'flex', 
-        justifyContent: 'center', 
-        gap: '3rem',
-        color: '#F4F1EB',
-        zIndex: 2
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textShadow: '0 2px 10px rgba(0,0,0,0.4)' }}>
-          <Truck size={24} style={{ opacity: 0.8 }} />
-          <span style={{ fontSize: '0.9rem', lineHeight: '1.2', fontWeight: '300' }}>Entrega em<br/>Goiânia e Região</span>
+  const featuredProducts = [];
+  categories.forEach(cat => {
+    const prods = getProductsByCategory(cat.id);
+    if (prods && prods.length > 0) {
+      featuredProducts.push({
+        ...prods[0],
+        categoryName: cat.name
+      });
+    }
+  });
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [autoplay, setAutoplay] = useState(true);
+
+  useEffect(() => {
+    let interval;
+    if (autoplay && featuredProducts.length > 0) {
+      interval = setInterval(() => {
+        setActiveIndex((current) => (current + 1) % featuredProducts.length);
+      }, 10000);
+    }
+    return () => clearInterval(interval);
+  }, [autoplay, featuredProducts.length]);
+
+  if (featuredProducts.length === 0) {
+    return <section className="hero-new" style={{paddingTop: '120px', height: '100vh'}}><div className="container">Carregando Destaques...</div></section>;
+  }
+
+  const activeProduct = featuredProducts[activeIndex];
+  
+  const getDimensionText = (product) => {
+    const specs = product.especificacoes_gerais || product.especificacoes_mesa || product.especificacoes_cadeira || "";
+    if (specs && typeof specs === 'string') {
+        const lines = specs.split('\n').filter(l => l.trim() !== '');
+        if(lines.length > 0) return lines[0].substring(0, 40) + (lines[0].length > 40 ? '...' : '');
+    }
+    return `Clique para mais informações`;
+  };
+
+  const formatPrice = (price) => {
+    const numericPrice = parseFloat(price);
+    if (isNaN(numericPrice) || numericPrice <= 0) {
+      return 'Sob consulta';
+    }
+    return new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(numericPrice);
+  };
+
+  const getDynamicBadge = (index) => {
+    const badges = ["Design Autoral", "Série Limitada", "Alta Durabilidade", "Acabamento Premium", "Material Nobre", "Peça Assinada", "Conforto Exclusivo"];
+    return badges[index % badges.length];
+  };
+
+  return (
+    <section className="hero-new">
+      <div className="hero-grid container">
+        {/* Lado Esquerdo: Textos */}
+        <div className="hero-text-side">
+          <div className="hero-brand-line">
+            <span className="hero-brand-line-bar"></span> ESTUDIO MOVEIS
+          </div>
+          
+          <h1 className="hero-title-new">
+            A sua<br/>
+            <span style={{ color: 'var(--color-accent)', fontFamily: 'var(--font-serif)', fontStyle: 'italic', fontWeight: 400 }}>loja online</span><br/>
+            <span style={{ fontFamily: 'var(--font-serif)', fontWeight: 700, fontStyle: 'normal' }}>de Móveis.</span>
+          </h1>
+          
+          <p className="hero-subtitle-new">
+            Mobiliário autoral de luxo que une o minimalismo<br/>
+            contemporâneo à alta marcenaria brasileira. Peças<br/>
+            exclusivas prontas para transformar o seu espaço.
+          </p>
+
+          <div className="hero-features">
+            <div className="hero-feature-item">
+              <div className="hero-feature-icon">
+                <Truck size={20} strokeWidth={1.5} />
+              </div>
+              <div className="hero-feature-text">
+                <h4>ENTREGA ESPECIALIZADA</h4>
+                <p>Entregamos para Goiânia e Região.</p>
+              </div>
+            </div>
+            
+            <div className="hero-feature-item">
+              <div className="hero-feature-icon">
+                <Star size={20} strokeWidth={1.5} />
+              </div>
+              <div className="hero-feature-text">
+                <h4>CURADORIA EXCLUSIVA</h4>
+                <p>Produção sob demanda e edições limitadas assinadas por designers.</p>
+              </div>
+            </div>
+            
+            <div className="hero-feature-item">
+              <div className="hero-feature-icon">
+                <ShieldCheck size={20} strokeWidth={1.5} />
+              </div>
+              <div className="hero-feature-text">
+                <h4>GARANTIA ESTENDIDA</h4>
+                <p>Todas as linhas estruturais contam com 5 anos de garantia de fábrica.</p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', textShadow: '0 2px 10px rgba(0,0,0,0.4)' }}>
-          <CreditCard size={24} style={{ opacity: 0.8 }} />
-          <span style={{ fontSize: '0.9rem', lineHeight: '1.2', fontWeight: '300' }}>Parcelamento<br/>sem Juros</span>
+
+        {/* Lado Direito: Carrossel */}
+        <div className="hero-carousel-side">
+          
+          <div className="hero-carousel-wrapper">
+            {/* Miniaturas */}
+            <div className="hero-carousel-thumbs">
+              {featuredProducts.map((prod, index) => (
+                <button 
+                  key={prod.id} 
+                  className={`hero-thumb-btn ${index === activeIndex ? 'active' : ''}`}
+                  onClick={() => {
+                    setActiveIndex(index);
+                    setAutoplay(false);
+                  }}
+                >
+                  <img src={prod.image} alt={prod.title} />
+                  <span>{prod.categoryName.split(' ')[0]}</span>
+                </button>
+              ))}
+            </div>
+
+            {/* Imagem Principal */}
+            <div className="hero-carousel-main" onClick={() => navigate(`/produto/${activeProduct.id}`)}>
+              {/* Cards Flutuantes */}
+              <div className="floating-card top-left">
+                <span className="fc-tag">DESTAQUE DA CATEGORIA</span>
+                <span className="fc-title">{activeProduct.title}</span>
+                <span className="fc-desc">{getDimensionText(activeProduct)}</span>
+                <span className="fc-sub">{activeProduct.categoryName}</span>
+              </div>
+
+              <div className="floating-card top-right">
+                <span className="fc-badge">{getDynamicBadge(activeIndex)}</span>
+              </div>
+              
+              <div className="floating-card bottom-right">
+                <span className="fc-title-small">{activeProduct.title}</span>
+                <span className="fc-price">
+                  {formatPrice(activeProduct.price)}
+                </span>
+              </div>
+
+              <div 
+                className="floating-card" 
+                style={{ bottom: '-1rem', left: '1rem', padding: '0.8rem 1rem' }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <span className="fc-desc" style={{ maxWidth: '160px', display: 'block', fontSize: '0.7rem', lineHeight: '1.4' }}>
+                  {activeProduct.description ? 
+                    (activeProduct.description.length > 70 ? activeProduct.description.substring(0, 70) + '...' : activeProduct.description) 
+                    : 'Design sofisticado e acabamento impecável.'}
+                </span>
+              </div>
+
+              <img 
+                key={activeProduct.id} 
+                src={activeProduct.image} 
+                alt={activeProduct.title} 
+                className="hero-main-img animate-fade-in" 
+              />
+            </div>
+          </div>
+
+          {/* Progresso Numérico Lateral */}
+          <div className="hero-carousel-progress">
+            <span className="progress-num active">{String(activeIndex + 1).padStart(2, '0')}</span>
+            <div className="progress-bar-vertical">
+              <div 
+                className="progress-fill-vertical" 
+                style={{ 
+                  '--progress': `${((activeIndex + 1) / featuredProducts.length) * 100}%`,
+                }}
+              ></div>
+            </div>
+            <span className="progress-num inactive">{String(featuredProducts.length).padStart(2, '0')}</span>
+          </div>
+
         </div>
       </div>
     </section>
