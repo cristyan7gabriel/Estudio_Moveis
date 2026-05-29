@@ -125,6 +125,7 @@ export const Header = () => {
   const { categories } = useContext(ProductsContext);
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   const location = useLocation();
   const isHomePage = location.pathname === '/';
@@ -139,6 +140,12 @@ export const Header = () => {
     }
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isHomePage]);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   return (
     <header className={`header ${scrolled ? 'scrolled' : ''}`}>
@@ -159,13 +166,14 @@ export const Header = () => {
 
           {categories.filter(cat => !["cozinha", "cadeiras", "sala de jantar"].includes(cat.name.toLowerCase())).length > 0 && (
             <>
-              <div className="desktop-only-dropdown">
+              <div className="desktop-only-dropdown" style={{ display: isMobile ? 'none' : 'block' }}>
                 <NavDropdown 
                   categories={categories.filter(cat => !["cozinha", "cadeiras", "sala de jantar"].includes(cat.name.toLowerCase()))} 
                   setIsMenuOpen={setIsMenuOpen} 
                 />
               </div>
-              {categories.filter(cat => !["cozinha", "cadeiras", "sala de jantar"].includes(cat.name.toLowerCase())).map(cat => (
+              
+              {isMobile && categories.filter(cat => !["cozinha", "cadeiras", "sala de jantar"].includes(cat.name.toLowerCase())).map(cat => (
                 <Link 
                   key={cat.id} 
                   to={`/categoria/${cat.id}`} 
