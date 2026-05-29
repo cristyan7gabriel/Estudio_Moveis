@@ -150,7 +150,9 @@ export const Header = () => {
   return (
     <header className={`header ${scrolled ? 'scrolled' : ''}`}>
       <div className="container header-container">
-        <Link to="/" className="logo" onClick={() => setIsMenuOpen(false)}>Estúdio Móveis</Link>
+        <Link to="/" className="logo" style={{ display: 'flex', alignItems: 'center' }} onClick={() => setIsMenuOpen(false)}>
+          <img src="/images/Logomarca/eu_preciso_dessa_logo,_mas_202605291133.png" alt="Estúdio Móveis" style={{ height: '110px', objectFit: 'contain' }} />
+        </Link>
         
         <nav className={`nav-links ${isMenuOpen ? 'nav-active' : ''}`}>
           {categories.filter(cat => ["cozinha", "cadeiras", "sala de jantar"].includes(cat.name.toLowerCase())).map(cat => (
@@ -205,8 +207,8 @@ export const Footer = () => {
       <div className="container">
         <div className="footer-grid">
           <div className="footer-col">
-            <h4 style={{ color: 'var(--color-accent)' }}>Estúdio Móveis</h4>
-            <p style={{ marginTop: '1rem', color: 'rgba(255,255,255,0.6)' }}>
+            <img src="/images/Logomarca/eu_preciso_dessa_logo,_mas_202605291133.png" alt="Estúdio Móveis" style={{ height: '160px', objectFit: 'contain', marginBottom: '1rem', borderRadius: '4px' }} />
+            <p style={{ marginTop: '0', color: 'rgba(255,255,255,0.6)' }}>
               Design sofisticado, conforto inigualável. Transformando casas em lares com peças exclusivas.
             </p>
           </div>
@@ -238,7 +240,9 @@ export const Footer = () => {
           </div>
         </div>
         <div className="footer-bottom">
-          <p>&copy; {new Date().getFullYear()} Estúdio Móveis. Todos os direitos reservados.</p>
+          <p>
+            Desenvolvido e Administrado por <a href="https://cgwebs.site" target="_blank" rel="noopener noreferrer" style={{ color: '#4da6ff', fontWeight: 'bold', textDecoration: 'none' }}>CG Web</a>
+          </p>
         </div>
       </div>
     </footer>

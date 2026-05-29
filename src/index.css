@@ -222,7 +222,8 @@ button {
 .header-container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 3rem;
   width: 100%;
 }
 
@@ -945,6 +946,7 @@ button {
   display: flex;
   align-items: center;
   gap: 1rem;
+  margin-left: auto;
 }
 
 .search-container {
