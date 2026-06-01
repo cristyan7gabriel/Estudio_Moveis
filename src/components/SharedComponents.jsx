@@ -214,7 +214,7 @@ const MaisSecoesSubMenu = ({ section, isMobile, closeMainMenu }) => {
       </div>
       
       {isSubOpen && (
-        <div className={`nav-dropdown-flyout ${isMobile ? 'nav-dropdown-flyout-mobile' : ''}`}>
+        <div className={`nav-dropdown-flyout ${!isMobile ? 'nav-dropdown-flyout-left' : ''} ${isMobile ? 'nav-dropdown-flyout-mobile' : ''}`}>
           {section.categories.map(cat => (
             <Link 
               key={cat.id} 
@@ -298,7 +298,7 @@ const MaisSecoesDropdown = ({ sections, setIsMenuOpen, isMobile, activeDropdown,
         MAIS SEÇÕES
       </button>
       {isOpen && (
-        <div className={`nav-dropdown-menu ${isMobile ? 'nav-dropdown-mobile' : ''}`} style={{ minWidth: '250px', padding: '0.5rem 0' }}>
+        <div className={`nav-dropdown-menu ${!isMobile ? 'nav-dropdown-menu-right' : ''} ${isMobile ? 'nav-dropdown-mobile' : ''}`} style={{ minWidth: '250px', padding: '0.5rem 0' }}>
           {sections.map(section => {
             const hasSubcategories = section.categories.length > 0 && !(section.categories.length === 1 && section.categories[0].name === section.name);
             
