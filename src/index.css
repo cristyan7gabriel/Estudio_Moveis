@@ -1084,8 +1084,17 @@ button {
   opacity: 0.5;
 }
 
+.header-logo-img {
+  height: 110px;
+  object-fit: contain;
+}
+
 .mobile-menu-btn {
   display: none;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
   color: var(--color-primary);
   z-index: 2000;
   transition: var(--transition-base);
@@ -1363,6 +1372,14 @@ button {
   :root {
     --header-height: 70px;
     --spacing-xl: 4rem;
+  }
+
+  .header-logo-img {
+    height: 55px; /* Smaller logo for mobile */
+  }
+
+  .product-carousel > * {
+    flex: 0 0 calc(75% - 1rem); /* Show 1.5 items on mobile to avoid stretching */
   }
 
   .mobile-menu-btn {

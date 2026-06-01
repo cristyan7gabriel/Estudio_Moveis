@@ -413,7 +413,7 @@ export const Header = () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
         >
-          <img src="/images/Logomarca/eu_preciso_dessa_logo,_mas_202605291133.png" alt="Estúdio Móveis" style={{ height: '110px', objectFit: 'contain' }} />
+          <img src="/images/Logomarca/eu_preciso_dessa_logo,_mas_202605291133.png" alt="Estúdio Móveis" className="header-logo-img" />
         </Link>
         
         <nav className={`nav-links ${isMenuOpen ? 'nav-active' : ''}`}>
