@@ -1704,3 +1704,15 @@ button {
   }
 }
 
+@media (max-width: 768px) {
+  .sidebar-title,
+  .sidebar-menu {
+    display: none;
+  }
+  .breadcrumbs {
+    margin-bottom: 0;
+  }
+  .category-page-layout {
+    gap: 1rem;
+  }
+}
