@@ -483,9 +483,9 @@ export const Footer = () => {
           </div>
           <div className="footer-col">
             <h4 style={{ color: 'var(--color-accent)' }}>Categorias</h4>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1rem' }}>
+            <div className="footer-categories-grid">
               {categories.map(cat => (
-                <Link key={cat.id} to={`/categoria/${cat.id}`} style={{ color: 'rgba(255,255,255,0.8)', textDecoration: 'none' }}>
+                <Link key={cat.id} to={`/categoria/${cat.id}`} className="footer-category-link">
                   {cat.name}
                 </Link>
               ))}

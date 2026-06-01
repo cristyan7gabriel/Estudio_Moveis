@@ -1076,6 +1076,26 @@ button {
   color: var(--color-accent);
 }
 
+.footer-categories-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem 1.5rem;
+  margin-top: 1rem;
+}
+
+.footer-category-link {
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: var(--transition-base);
+  text-align: left;
+}
+
+.footer-category-link:hover {
+  color: var(--color-accent);
+  opacity: 1;
+}
+
 .footer-bottom {
   text-align: center;
   padding-top: 3rem;
