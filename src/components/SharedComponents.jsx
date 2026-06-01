@@ -485,7 +485,12 @@ export const Footer = () => {
             <h4 style={{ color: 'var(--color-accent)' }}>Categorias</h4>
             <div className="footer-categories-grid">
               {categories.map(cat => (
-                <Link key={cat.id} to={`/categoria/${cat.id}`} className="footer-category-link">
+                <Link 
+                  key={cat.id} 
+                  to={`/categoria/${cat.id}`} 
+                  className="footer-category-link"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                >
                   {cat.name}
                 </Link>
               ))}
