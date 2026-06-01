@@ -1403,8 +1403,11 @@ button {
     background-color: var(--color-bg);
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 3rem;
+    justify-content: flex-start;
+    padding-top: 100px;
+    padding-bottom: 50px;
+    gap: 2rem;
+    overflow-y: auto;
     transition: var(--transition-base);
     box-shadow: -10px 0 30px rgba(0,0,0,0.05);
     z-index: 1500;

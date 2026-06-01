@@ -431,15 +431,30 @@ export const Header = () => {
           ))}
           
           {otherSections.length > 0 && (
-            <MaisSecoesDropdown 
-              sections={otherSections} 
-              setIsMenuOpen={setIsMenuOpen} 
-              isMobile={isMobile} 
-              activeDropdown={activeDropdown}
-              setActiveDropdown={setActiveDropdown}
-              pinnedDropdown={pinnedDropdown}
-              setPinnedDropdown={setPinnedDropdown}
-            />
+            isMobile ? (
+              otherSections.map(section => (
+                <SectionDropdown 
+                  key={section.id} 
+                  section={section} 
+                  setIsMenuOpen={setIsMenuOpen} 
+                  isMobile={isMobile}
+                  activeDropdown={activeDropdown}
+                  setActiveDropdown={setActiveDropdown}
+                  pinnedDropdown={pinnedDropdown}
+                  setPinnedDropdown={setPinnedDropdown}
+                />
+              ))
+            ) : (
+              <MaisSecoesDropdown 
+                sections={otherSections} 
+                setIsMenuOpen={setIsMenuOpen} 
+                isMobile={isMobile} 
+                activeDropdown={activeDropdown}
+                setActiveDropdown={setActiveDropdown}
+                pinnedDropdown={pinnedDropdown}
+                setPinnedDropdown={setPinnedDropdown}
+              />
+            )
           )}
         </nav>
 
