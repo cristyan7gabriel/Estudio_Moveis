@@ -20,7 +20,11 @@ export const ProductsProvider = ({ children }) => {
       try {
         const queryCategories = `*[_type == "category"]{
           "id": _id,
-          "name": name
+          "name": name,
+          "slug": id.current,
+          "sectionName": section->name,
+          "sectionOrder": section->order,
+          "sectionId": section->_id
         }`;
         
         const queryProducts = `*[_type == "product"]{

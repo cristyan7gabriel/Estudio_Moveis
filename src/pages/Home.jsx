@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ProductGrid, WhatsAppDropdownBtn, InstagramIcon } from '../components/SharedComponents';
+import { ProductCarousel, WhatsAppDropdownBtn, InstagramIcon } from '../components/SharedComponents';
 import { ProductsContext } from '../context/ProductsContext';
 
 import { ArrowRight, Sofa, Armchair, Briefcase, BedDouble, Truck, CreditCard, Star, ShieldCheck } from 'lucide-react';
@@ -9,35 +9,62 @@ const Hero = () => {
   const { categories, getProductsByCategory } = useContext(ProductsContext);
   const navigate = useNavigate();
 
-  const featuredProducts = [];
-  categories.forEach(cat => {
-    const prods = getProductsByCategory(cat.id);
-    if (prods && prods.length > 0) {
-      featuredProducts.push({
-        ...prods[0],
-        categoryName: cat.name
-      });
-    }
-  });
+  const targetCategoryKeywords = [
+    { label: "Mesa", match: "mesa de jantar c/ 06 cadeiras" },
+    { label: "Cozinha", match: "cozinha" },
+    { label: "Guarda-Roupa", match: "guarda-roupa" },
+    { label: "Cadeiras", match: "cadeiras" },
+    { label: "Colchões", match: "colchões" }
+  ];
+
+  // Build featured sections
+  const featuredSections = targetCategoryKeywords.map(target => {
+    const cats = categories.filter(c => c.name.toLowerCase().includes(target.match.toLowerCase()));
+    let allProds = [];
+    cats.forEach(c => allProds.push(...getProductsByCategory(c.id)));
+    return {
+      label: target.label,
+      products: allProds
+    };
+  }).filter(s => s.products.length > 0);
 
   const [activeIndex, setActiveIndex] = useState(0);
   const [autoplay, setAutoplay] = useState(true);
+  const [productIndices, setProductIndices] = useState([]);
+
+  useEffect(() => {
+    if (featuredSections.length > 0 && productIndices.length === 0) {
+      setProductIndices(featuredSections.map(() => 0));
+    }
+  }, [featuredSections.length, productIndices.length]);
 
   useEffect(() => {
     let interval;
-    if (autoplay && featuredProducts.length > 0) {
+    if (autoplay && featuredSections.length > 0 && productIndices.length > 0) {
       interval = setInterval(() => {
-        setActiveIndex((current) => (current + 1) % featuredProducts.length);
+        setActiveIndex((current) => {
+          const nextIndex = (current + 1) % featuredSections.length;
+          setProductIndices(prev => {
+            const newIndices = [...prev];
+            newIndices[nextIndex] = (newIndices[nextIndex] + 1) % featuredSections[nextIndex].products.length;
+            return newIndices;
+          });
+          return nextIndex;
+        });
       }, 10000);
     }
     return () => clearInterval(interval);
-  }, [autoplay, featuredProducts.length]);
+  }, [autoplay, featuredSections.length, productIndices.length]);
 
-  if (featuredProducts.length === 0) {
+  if (featuredSections.length === 0 || productIndices.length === 0) {
     return <section className="hero-new" style={{paddingTop: '120px', height: '100vh'}}><div className="container">Carregando Destaques...</div></section>;
   }
 
-  const activeProduct = featuredProducts[activeIndex];
+  const activeSection = featuredSections[activeIndex];
+  const activeProduct = {
+    ...activeSection.products[productIndices[activeIndex]],
+    categoryName: activeSection.label
+  };
   
   const getDimensionText = (product) => {
     const specs = product.especificacoes_gerais || product.especificacoes_mesa || product.especificacoes_cadeira || "";
@@ -121,19 +148,28 @@ const Hero = () => {
           <div className="hero-carousel-wrapper">
             {/* Miniaturas */}
             <div className="hero-carousel-thumbs">
-              {featuredProducts.map((prod, index) => (
-                <button 
-                  key={prod.id} 
-                  className={`hero-thumb-btn ${index === activeIndex ? 'active' : ''}`}
-                  onClick={() => {
-                    setActiveIndex(index);
-                    setAutoplay(false);
-                  }}
-                >
-                  <img src={prod.image} alt={prod.title} />
-                  <span>{prod.categoryName.split(' ')[0]}</span>
-                </button>
-              ))}
+              {featuredSections.map((section, index) => {
+                const prod = section.products[productIndices[index]];
+                if (!prod) return null;
+                return (
+                  <button 
+                    key={section.label} 
+                    className={`hero-thumb-btn ${index === activeIndex ? 'active' : ''}`}
+                    onClick={() => {
+                      setActiveIndex(index);
+                      setAutoplay(false);
+                      setProductIndices(prev => {
+                        const newIndices = [...prev];
+                        newIndices[index] = (newIndices[index] + 1) % section.products.length;
+                        return newIndices;
+                      });
+                    }}
+                  >
+                    <img src={prod.image} alt={prod.title} />
+                    <span>{section.label}</span>
+                  </button>
+                );
+              })}
             </div>
 
             {/* Imagem Principal */}
@@ -185,11 +221,11 @@ const Hero = () => {
               <div 
                 className="progress-fill-vertical" 
                 style={{ 
-                  '--progress': `${((activeIndex + 1) / featuredProducts.length) * 100}%`,
+                  '--progress': `${((activeIndex + 1) / featuredSections.length) * 100}%`,
                 }}
               ></div>
             </div>
-            <span className="progress-num inactive">{String(featuredProducts.length).padStart(2, '0')}</span>
+            <span className="progress-num inactive">{String(featuredSections.length).padStart(2, '0')}</span>
           </div>
 
         </div>
@@ -241,9 +277,10 @@ export const Home = () => {
           if (catProducts.length === 0) return null;
           return (
             <div key={cat.id} style={{ marginBottom: '1rem' }}>
-              <ProductGrid 
+              <ProductCarousel 
                 title={cat.name} 
                 products={catProducts} 
+                categoryId={cat.slug || cat.id}
               />
             </div>
           );

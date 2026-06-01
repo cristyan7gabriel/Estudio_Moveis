@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { MessageCircle, Phone, MapPin, Sofa, Armchair, Briefcase, BedDouble, ArrowRight, Menu, X, Search } from 'lucide-react';
+import { MessageCircle, Phone, MapPin, Sofa, Armchair, Briefcase, BedDouble, ArrowRight, Menu, X, Search, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ProductsContext } from '../context/ProductsContext';
 
 export const WHATSAPP_PHONE_POLYANA = "556292421294";
@@ -77,44 +77,264 @@ export const SearchBar = () => {
   );
 };
 
-const NavDropdown = ({ categories, setIsMenuOpen }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const SectionDropdown = ({ section, setIsMenuOpen, isMobile, activeDropdown, setActiveDropdown, pinnedDropdown, setPinnedDropdown }) => {
   const containerRef = useRef(null);
+  const timeoutRef = useRef(null);
+
+  const isOpen = activeDropdown === section.id;
+  const isPinned = pinnedDropdown === section.id;
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (containerRef.current && !containerRef.current.contains(event.target)) {
-        setIsOpen(false);
+        if (isOpen) setActiveDropdown(null);
+        if (isPinned) setPinnedDropdown(null);
       }
     };
-    if (isOpen) {
+    if (isOpen || isPinned) {
       document.addEventListener('mousedown', handleClickOutside);
     }
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
     };
-  }, [isOpen]);
+  }, [isOpen, isPinned, setActiveDropdown, setPinnedDropdown]);
+
+  const handleMouseEnter = () => {
+    if (isMobile) return;
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    if (pinnedDropdown && pinnedDropdown !== section.id) {
+      setPinnedDropdown(section.id);
+    }
+    setActiveDropdown(section.id);
+  };
+
+  const handleMouseLeave = () => {
+    if (isMobile || isPinned) return;
+    timeoutRef.current = setTimeout(() => {
+      setActiveDropdown(prev => (prev === section.id ? null : prev));
+    }, 250);
+  };
+
+  const handleToggleClick = (e) => {
+    e.preventDefault();
+    if (isPinned) {
+      setPinnedDropdown(null);
+      setActiveDropdown(null);
+    } else {
+      setPinnedDropdown(section.id);
+      setActiveDropdown(section.id);
+    }
+  };
+
+  const hasSubcategories = section.categories.length > 0 && !(section.categories.length === 1 && section.categories[0].name === section.name);
+
+  // If there are no subcategories or just one with the same name, render as a simple link
+  if (!hasSubcategories) {
+    const cat = section.categories[0];
+    return (
+      <Link 
+        to={`/categoria/${cat?.slug || cat?.id}`} 
+        className="nav-link"
+        onClick={() => setIsMenuOpen(false)}
+      >
+        {section.name}
+      </Link>
+    );
+  }
 
   return (
-    <div ref={containerRef} className="nav-dropdown-container">
+    <div 
+      ref={containerRef} 
+      className="nav-dropdown-container"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
       <button 
         className="nav-link nav-dropdown-btn" 
-        onClick={(e) => { e.preventDefault(); setIsOpen(!isOpen); }}
+        onClick={handleToggleClick}
       >
-        Mais Seções ▼
+        {section.name}
       </button>
       {isOpen && (
-        <div className="nav-dropdown-menu">
-          {categories.map(cat => (
+        <div className={`nav-dropdown-menu ${isMobile ? 'nav-dropdown-mobile' : ''}`}>
+          {section.categories.map(cat => (
             <Link 
               key={cat.id} 
-              to={`/categoria/${cat.id}`} 
+              to={`/categoria/${cat.slug || cat.id}`} 
               className={`nav-dropdown-item ${cat.isHighlight ? 'nav-link-highlight' : ''}`}
-              onClick={() => { setIsMenuOpen(false); setIsOpen(false); }}
+              onClick={() => { 
+                setIsMenuOpen(false); 
+                setActiveDropdown(null); 
+                setPinnedDropdown(null); 
+              }}
             >
               {cat.name}
             </Link>
           ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+const MaisSecoesSubMenu = ({ section, isMobile, closeMainMenu }) => {
+  const [isSubOpen, setIsSubOpen] = useState(false);
+  const timeoutRef = useRef(null);
+
+  const handleMouseEnter = () => {
+    if (isMobile) return;
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    setIsSubOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    if (isMobile) return;
+    timeoutRef.current = setTimeout(() => setIsSubOpen(false), 250);
+  };
+
+  return (
+    <div 
+      style={{ position: 'relative' }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div 
+        className="nav-dropdown-item"
+        style={{ fontWeight: '800', color: 'var(--color-primary)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', padding: '0.8rem 1.5rem', borderBottom: '1px solid rgba(0,0,0,0.05)' }}
+        onClick={(e) => {
+          if (isMobile) {
+            e.preventDefault();
+            setIsSubOpen(!isSubOpen);
+          }
+        }}
+      >
+        {section.name}
+        <span style={{ fontSize: '0.6rem', color: 'var(--color-accent)' }}>▶</span>
+      </div>
+      
+      {isSubOpen && (
+        <div className={`nav-dropdown-flyout ${isMobile ? 'nav-dropdown-flyout-mobile' : ''}`}>
+          {section.categories.map(cat => (
+            <Link 
+              key={cat.id} 
+              to={`/categoria/${cat.slug || cat.id}`} 
+              className="nav-dropdown-item"
+              onClick={() => {
+                setIsSubOpen(false);
+                closeMainMenu();
+              }}
+            >
+              {cat.name}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
+
+const MaisSecoesDropdown = ({ sections, setIsMenuOpen, isMobile, activeDropdown, setActiveDropdown, pinnedDropdown, setPinnedDropdown }) => {
+  const containerRef = useRef(null);
+  const timeoutRef = useRef(null);
+
+  const isOpen = activeDropdown === 'mais-secoes';
+  const isPinned = pinnedDropdown === 'mais-secoes';
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (containerRef.current && !containerRef.current.contains(event.target)) {
+        if (isOpen) setActiveDropdown(null);
+        if (isPinned) setPinnedDropdown(null);
+      }
+    };
+    if (isOpen || isPinned) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    };
+  }, [isOpen, isPinned, setActiveDropdown, setPinnedDropdown]);
+
+  const handleMouseEnter = () => {
+    if (isMobile) return;
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    if (pinnedDropdown && pinnedDropdown !== 'mais-secoes') {
+      setPinnedDropdown('mais-secoes');
+    }
+    setActiveDropdown('mais-secoes');
+  };
+
+  const handleMouseLeave = () => {
+    if (isMobile || isPinned) return;
+    timeoutRef.current = setTimeout(() => {
+      setActiveDropdown(prev => (prev === 'mais-secoes' ? null : prev));
+    }, 250);
+  };
+
+  const handleToggleClick = (e) => {
+    e.preventDefault();
+    if (isPinned) {
+      setPinnedDropdown(null);
+      setActiveDropdown(null);
+    } else {
+      setPinnedDropdown('mais-secoes');
+      setActiveDropdown('mais-secoes');
+    }
+  };
+
+  return (
+    <div 
+      ref={containerRef} 
+      className="nav-dropdown-container"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <button 
+        className="nav-link nav-dropdown-btn" 
+        onClick={handleToggleClick}
+      >
+        MAIS SEÇÕES
+      </button>
+      {isOpen && (
+        <div className={`nav-dropdown-menu ${isMobile ? 'nav-dropdown-mobile' : ''}`} style={{ minWidth: '250px', padding: '0.5rem 0' }}>
+          {sections.map(section => {
+            const hasSubcategories = section.categories.length > 0 && !(section.categories.length === 1 && section.categories[0].name === section.name);
+            
+            if (!hasSubcategories) {
+              const cat = section.categories[0];
+              if (!cat) return null;
+              return (
+                <Link 
+                  key={section.id} 
+                  to={`/categoria/${cat.slug || cat.id}`} 
+                  className="nav-dropdown-item"
+                  style={{ fontWeight: '700', color: 'var(--color-primary)', borderBottom: '1px solid rgba(0,0,0,0.05)', padding: '0.8rem 1.5rem' }}
+                  onClick={() => { 
+                    setIsMenuOpen(false); 
+                    setActiveDropdown(null); 
+                    setPinnedDropdown(null); 
+                  }}
+                >
+                  {section.name}
+                </Link>
+              );
+            }
+
+            return (
+              <MaisSecoesSubMenu 
+                key={section.id} 
+                section={section} 
+                isMobile={isMobile} 
+                closeMainMenu={() => {
+                  setIsMenuOpen(false);
+                  setActiveDropdown(null);
+                  setPinnedDropdown(null);
+                }} 
+              />
+            );
+          })}
         </div>
       )}
     </div>
@@ -126,6 +346,8 @@ export const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [pinnedDropdown, setPinnedDropdown] = useState(null);
 
   const location = useLocation();
   const isHomePage = location.pathname === '/';
@@ -147,45 +369,77 @@ export const Header = () => {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // Group categories by section name to merge legacy categories with new sections
+  const sectionsMap = categories.reduce((acc, cat) => {
+    const groupName = (cat.sectionName || cat.name).toUpperCase();
+
+    if (!acc[groupName]) {
+      acc[groupName] = {
+        id: cat.sectionId || cat.id,
+        name: cat.sectionName || cat.name,
+        order: cat.sectionOrder || 99,
+        categories: []
+      };
+    }
+    
+    // Se a categoria atual faz parte de uma seção real (tem sectionId e sectionOrder),
+    // garantimos que as propriedades da seção real prevaleçam sobre a categoria legada
+    if (cat.sectionId && cat.sectionOrder && cat.sectionOrder < acc[groupName].order) {
+      acc[groupName].order = cat.sectionOrder;
+      acc[groupName].id = cat.sectionId;
+      acc[groupName].name = cat.sectionName;
+    }
+    
+    acc[groupName].categories.push(cat);
+    return acc;
+  }, {});
+
+  const sortedSections = Object.values(sectionsMap).sort((a, b) => a.order - b.order);
+
+  const MAIN_SECTIONS = ["SALA DE ESTAR", "SALA DE JANTAR", "COZINHA"];
+  
+  const mainSections = sortedSections.filter(sec => MAIN_SECTIONS.includes(sec.name.toUpperCase()));
+  const otherSections = sortedSections.filter(sec => !MAIN_SECTIONS.includes(sec.name.toUpperCase()));
+
   return (
     <header className={`header ${scrolled ? 'scrolled' : ''}`}>
       <div className="container header-container">
-        <Link to="/" className="logo" style={{ display: 'flex', alignItems: 'center' }} onClick={() => setIsMenuOpen(false)}>
+        <Link 
+          to="/" 
+          className="logo" 
+          style={{ display: 'flex', alignItems: 'center' }} 
+          onClick={() => {
+            setIsMenuOpen(false);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+        >
           <img src="/images/Logomarca/eu_preciso_dessa_logo,_mas_202605291133.png" alt="Estúdio Móveis" style={{ height: '110px', objectFit: 'contain' }} />
         </Link>
         
         <nav className={`nav-links ${isMenuOpen ? 'nav-active' : ''}`}>
-          {categories.filter(cat => ["cozinha", "cadeiras", "sala de jantar"].includes(cat.name.toLowerCase())).map(cat => (
-            <Link 
-              key={cat.id} 
-              to={`/categoria/${cat.id}`} 
-              className={`nav-link ${cat.isHighlight ? 'nav-link-highlight' : ''}`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              {cat.name}
-            </Link>
+          {mainSections.map(section => (
+            <SectionDropdown 
+              key={section.id} 
+              section={section} 
+              setIsMenuOpen={setIsMenuOpen} 
+              isMobile={isMobile}
+              activeDropdown={activeDropdown}
+              setActiveDropdown={setActiveDropdown}
+              pinnedDropdown={pinnedDropdown}
+              setPinnedDropdown={setPinnedDropdown}
+            />
           ))}
-
-          {categories.filter(cat => !["cozinha", "cadeiras", "sala de jantar"].includes(cat.name.toLowerCase())).length > 0 && (
-            <>
-              <div className="desktop-only-dropdown" style={{ display: isMobile ? 'none' : 'block' }}>
-                <NavDropdown 
-                  categories={categories.filter(cat => !["cozinha", "cadeiras", "sala de jantar"].includes(cat.name.toLowerCase()))} 
-                  setIsMenuOpen={setIsMenuOpen} 
-                />
-              </div>
-              
-              {isMobile && categories.filter(cat => !["cozinha", "cadeiras", "sala de jantar"].includes(cat.name.toLowerCase())).map(cat => (
-                <Link 
-                  key={cat.id} 
-                  to={`/categoria/${cat.id}`} 
-                  className={`nav-link mobile-only-link ${cat.isHighlight ? 'nav-link-highlight' : ''}`}
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {cat.name}
-                </Link>
-              ))}
-            </>
+          
+          {otherSections.length > 0 && (
+            <MaisSecoesDropdown 
+              sections={otherSections} 
+              setIsMenuOpen={setIsMenuOpen} 
+              isMobile={isMobile} 
+              activeDropdown={activeDropdown}
+              setActiveDropdown={setActiveDropdown}
+              pinnedDropdown={pinnedDropdown}
+              setPinnedDropdown={setPinnedDropdown}
+            />
           )}
         </nav>
 
@@ -329,7 +583,7 @@ export const FloatingWhatsApp = () => {
   );
 };
 
-export const ProductCard = ({ id, title, description, image, price }) => {
+export const ProductCard = ({ id, title, description, image, price, hideDescription = false }) => {
   return (
     <div className="product-card">
       <Link to={`/produto/${id}`} className="product-image-container" style={{ display: 'block' }}>
@@ -337,7 +591,9 @@ export const ProductCard = ({ id, title, description, image, price }) => {
       </Link>
       <div className="product-info">
         <h3 className="product-title">{title}</h3>
-        <p className="product-desc" style={{ marginBottom: '1rem' }}>{description}</p>
+        {!hideDescription && (
+          <p className="product-desc" style={{ marginBottom: '1rem' }}>{description}</p>
+        )}
         <p style={{ 
           fontSize: '1.2rem', 
           fontWeight: '600', 
@@ -369,8 +625,142 @@ export const ProductGrid = ({ title, subtitle, products }) => {
       {subtitle && <p className="section-subtitle text-center" style={{ marginTop: '-1.5rem', marginBottom: '3rem' }}>{subtitle}</p>}
       <div className="product-grid">
         {products.map((prod) => (
-          <ProductCard key={prod.id} {...prod} />
+          <ProductCard key={prod.id} {...prod} hideDescription={true} />
         ))}
+      </div>
+    </section>
+  );
+};
+
+export const ProductCarousel = ({ title, subtitle, products, categoryId }) => {
+  const carouselRef = useRef(null);
+  const [isDown, setIsDown] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeftState, setScrollLeftState] = useState(0);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  const checkScroll = () => {
+    if (carouselRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = carouselRef.current;
+      setCanScrollLeft(scrollLeft > 0);
+      setCanScrollRight(scrollLeft < scrollWidth - clientWidth - 1);
+    }
+  };
+
+  useEffect(() => {
+    checkScroll();
+    window.addEventListener('resize', checkScroll);
+    return () => window.removeEventListener('resize', checkScroll);
+  }, [products]);
+
+  const displayProducts = products.slice(0, 6);
+  const hasMore = products.length > 6;
+
+  const scroll = (direction) => {
+    if (carouselRef.current) {
+      const cardWidth = carouselRef.current.querySelector('.product-card')?.offsetWidth || 300;
+      const gap = 32; // 2rem
+      const scrollAmount = direction === 'left' ? -(cardWidth + gap) : (cardWidth + gap);
+      carouselRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  const onMouseDown = (e) => {
+    setIsDown(true);
+    setIsDragging(false);
+    if (carouselRef.current) {
+      carouselRef.current.classList.add('active-drag');
+      setStartX(e.pageX - carouselRef.current.offsetLeft);
+      setScrollLeftState(carouselRef.current.scrollLeft);
+    }
+  };
+
+  const onMouseLeave = () => {
+    setIsDown(false);
+    setIsDragging(false);
+    if (carouselRef.current) carouselRef.current.classList.remove('active-drag');
+  };
+
+  const onMouseUp = () => {
+    setIsDown(false);
+    if (carouselRef.current) carouselRef.current.classList.remove('active-drag');
+  };
+
+  const onMouseMove = (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    setIsDragging(true);
+    if (carouselRef.current) {
+      const x = e.pageX - carouselRef.current.offsetLeft;
+      const walk = (x - startX) * 2;
+      carouselRef.current.scrollLeft = scrollLeftState - walk;
+    }
+  };
+
+  // Prevent link click if we were dragging
+  const handleCaptureClick = (e) => {
+    if (isDragging) {
+      e.stopPropagation();
+      e.preventDefault();
+    }
+  };
+
+  return (
+    <section className="container section">
+      {title && (
+        <div className="section-header" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <div style={{ display: 'flex', width: '100%', alignItems: 'center', gap: '1rem' }}>
+            <div className="section-title-line" style={{ flex: 1 }}></div>
+            <h2 className="section-title" style={{ marginBottom: 0 }}>{title}</h2>
+            <div className="section-title-line" style={{ flex: 1 }}></div>
+          </div>
+        </div>
+      )}
+      {subtitle && <p className="section-subtitle text-center" style={{ marginTop: '-1.5rem', marginBottom: '3rem' }}>{subtitle}</p>}
+      
+      <div className="carousel-wrapper" style={{ position: 'relative' }}>
+        {canScrollLeft && (
+          <button 
+            className="carousel-nav-btn prev-btn" 
+            onClick={() => scroll('left')}
+          >
+            <ChevronLeft size={24} />
+          </button>
+        )}
+        
+        <div 
+          className="product-carousel" 
+          ref={carouselRef}
+          onScroll={checkScroll}
+          onMouseDown={onMouseDown}
+          onMouseLeave={onMouseLeave}
+          onMouseUp={onMouseUp}
+          onMouseMove={onMouseMove}
+          onClickCapture={handleCaptureClick}
+        >
+          {displayProducts.map((prod) => (
+            <ProductCard key={prod.id} {...prod} />
+          ))}
+          {hasMore && (
+            <Link to={`/categoria/${categoryId}`} className="view-all-card">
+              <ArrowRight size={48} style={{ marginBottom: '1rem', color: 'var(--color-accent)' }} />
+              <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem', fontFamily: 'var(--font-serif)' }}>Ver todos</h3>
+              <p style={{ fontSize: '0.9rem', opacity: 0.8 }}>Explore todos os produtos desta categoria</p>
+            </Link>
+          )}
+        </div>
+
+        {canScrollRight && (
+          <button 
+            className="carousel-nav-btn next-btn" 
+            onClick={() => scroll('right')}
+          >
+            <ChevronRight size={24} />
+          </button>
+        )}
       </div>
     </section>
   );
