@@ -1484,12 +1484,17 @@ button {
 
   .section-header {
     gap: 1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 2rem !important;
   }
 
   .section-title {
     font-size: 1.1rem;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.1em;
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-word;
+    flex-shrink: 1;
+    min-width: 0;
   }
 
   .footer-grid {
