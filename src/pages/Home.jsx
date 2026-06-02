@@ -271,11 +271,13 @@ export const Home = () => {
   const preferredOrder = ["mesa de jantar", "estofado", "guarda-roupa", "guarda roupa"];
   
   const sortedCategories = [...categories].sort((a, b) => {
-    const nameA = a.name.toLowerCase();
-    const nameB = b.name.toLowerCase();
+    const nameA = (a.name || "").toLowerCase();
+    const sectionA = (a.sectionName || "").toLowerCase();
+    const nameB = (b.name || "").toLowerCase();
+    const sectionB = (b.sectionName || "").toLowerCase();
     
-    let indexA = preferredOrder.findIndex(pref => nameA.includes(pref));
-    let indexB = preferredOrder.findIndex(pref => nameB.includes(pref));
+    let indexA = preferredOrder.findIndex(pref => nameA.includes(pref) || sectionA.includes(pref));
+    let indexB = preferredOrder.findIndex(pref => nameB.includes(pref) || sectionB.includes(pref));
     
     if (indexA === 3) indexA = 2; // Treat 'guarda roupa' same as 'guarda-roupa'
     if (indexB === 3) indexB = 2;
