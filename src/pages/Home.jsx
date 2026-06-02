@@ -268,11 +268,30 @@ const AmbientesPlanejados = () => {
 export const Home = () => {
   const { categories, getProductsByCategory } = useContext(ProductsContext);
 
+  const preferredOrder = ["mesa de jantar", "estofado", "guarda-roupa", "guarda roupa"];
+  
+  const sortedCategories = [...categories].sort((a, b) => {
+    const nameA = a.name.toLowerCase();
+    const nameB = b.name.toLowerCase();
+    
+    let indexA = preferredOrder.findIndex(pref => nameA.includes(pref));
+    let indexB = preferredOrder.findIndex(pref => nameB.includes(pref));
+    
+    if (indexA === 3) indexA = 2; // Treat 'guarda roupa' same as 'guarda-roupa'
+    if (indexB === 3) indexB = 2;
+
+    if (indexA !== -1 && indexB !== -1) return indexA - indexB;
+    if (indexA !== -1) return -1;
+    if (indexB !== -1) return 1;
+    
+    return a.name.localeCompare(b.name);
+  });
+
   return (
     <main>
       <Hero />
       <div id="destaques" style={{ paddingTop: '2rem' }}>
-        {categories.map(cat => {
+        {sortedCategories.map(cat => {
           const catProducts = getProductsByCategory(cat.id);
           if (catProducts.length === 0) return null;
           return (
