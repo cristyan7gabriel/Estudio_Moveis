@@ -201,7 +201,7 @@ const MaisSecoesSubMenu = ({ section, isMobile, closeMainMenu }) => {
     >
       <div 
         className="nav-dropdown-item"
-        style={{ fontWeight: '800', color: 'var(--color-primary)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', padding: '0.8rem 1.5rem', borderBottom: '1px solid rgba(0,0,0,0.05)' }}
+        style={{ fontWeight: '800', color: 'var(--color-primary)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', cursor: 'pointer', padding: '0.8rem 1.5rem', borderBottom: '1px solid rgba(0,0,0,0.05)' }}
         onClick={(e) => {
           if (isMobile) {
             e.preventDefault();
@@ -298,7 +298,7 @@ const MaisSecoesDropdown = ({ sections, setIsMenuOpen, isMobile, activeDropdown,
         MAIS SEÇÕES
       </button>
       {isOpen && (
-        <div className={`nav-dropdown-menu ${!isMobile ? 'nav-dropdown-menu-right' : ''} ${isMobile ? 'nav-dropdown-mobile' : ''}`} style={{ minWidth: '250px', padding: '0.5rem 0' }}>
+        <div className={`nav-dropdown-menu ${!isMobile ? 'nav-dropdown-menu-right' : ''} ${isMobile ? 'nav-dropdown-mobile' : ''}`} style={{ minWidth: '320px', padding: '0.5rem 0' }}>
           {sections.map(section => {
             const hasSubcategories = section.categories.length > 0 && !(section.categories.length === 1 && section.categories[0].name === section.name);
             
@@ -603,30 +603,36 @@ export const FloatingWhatsApp = () => {
   );
 };
 
-export const ProductCard = ({ id, title, description, image, price, hideDescription = false }) => {
+export const ProductCard = ({ id, title, description, image, price, hideDescription = false, compact = false }) => {
   return (
-    <div className="product-card">
-      <Link to={`/produto/${id}`} className="product-image-container" style={{ display: 'block' }}>
+    <div className="product-card" style={compact ? { padding: '1rem', border: 'none', boxShadow: 'none', backgroundColor: 'transparent' } : {}}>
+      <Link to={`/produto/${id}`} className="product-image-container" style={{ display: 'block', height: compact ? '220px' : '280px', marginBottom: compact ? '1rem' : '2rem' }}>
         <img src={image} alt={title} className="product-image" />
       </Link>
-      <div className="product-info">
-        <h3 className="product-title">{title}</h3>
-        {!hideDescription && (
+      <div className="product-info" style={compact ? { textAlign: 'center' } : {}}>
+        <Link to={`/produto/${id}`}>
+          <h3 className="product-title" style={compact ? { fontSize: '1.1rem', marginBottom: 0, transition: 'color 0.2s' } : {}}>{title}</h3>
+        </Link>
+        {!hideDescription && !compact && (
           <p className="product-desc" style={{ marginBottom: '1rem' }}>{description}</p>
         )}
-        <p style={{ 
-          fontSize: '1.2rem', 
-          fontWeight: '600', 
-          color: 'var(--color-primary)', 
-          marginBottom: '1.5rem',
-          fontFamily: 'var(--font-sans)',
-          marginTop: 'auto'
-        }}>
-          {price || 'Sob Consulta'}
-        </p>
-        <Link to={`/produto/${id}`} className="btn btn-primary" style={{ width: '100%', padding: '0.8rem' }}>
-          Ver Detalhes
-        </Link>
+        {!compact && (
+          <>
+            <p style={{ 
+              fontSize: '1.2rem', 
+              fontWeight: '600', 
+              color: 'var(--color-primary)', 
+              marginBottom: '1.5rem',
+              fontFamily: 'var(--font-sans)',
+              marginTop: 'auto'
+            }}>
+              {price || 'Sob Consulta'}
+            </p>
+            <Link to={`/produto/${id}`} className="btn btn-primary" style={{ width: '100%', padding: '0.8rem' }}>
+              Ver Detalhes
+            </Link>
+          </>
+        )}
       </div>
     </div>
   );
@@ -652,7 +658,7 @@ export const ProductGrid = ({ title, subtitle, products }) => {
   );
 };
 
-export const ProductCarousel = ({ title, subtitle, products, categoryId }) => {
+export const ProductCarousel = ({ title, subtitle, products, categoryId, compact = false }) => {
   const carouselRef = useRef(null);
   const [isDown, setIsDown] = useState(false);
   const [startX, setStartX] = useState(0);
@@ -762,9 +768,9 @@ export const ProductCarousel = ({ title, subtitle, products, categoryId }) => {
           onClickCapture={handleCaptureClick}
         >
           {displayProducts.map((prod) => (
-            <ProductCard key={prod.id} {...prod} />
+            <ProductCard key={prod.id} {...prod} compact={compact} />
           ))}
-          {hasMore && (
+          {hasMore && !compact && (
             <Link to={`/categoria/${categoryId}`} className="view-all-card">
               <ArrowRight size={48} style={{ marginBottom: '1rem', color: 'var(--color-accent)' }} />
               <h3 style={{ fontSize: '1.2rem', marginBottom: '0.5rem', fontFamily: 'var(--font-serif)' }}>Ver todos</h3>

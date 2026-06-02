@@ -74,7 +74,16 @@ export const ProductsProvider = ({ children }) => {
   }, []);
 
   const getProductsByCategory = (categoryId) => products.filter(p => p.categoryId === categoryId);
-  const getProductById = (id) => products.find(p => p.id === id);
+  const getProductById = (id) => {
+    if (!id) return null;
+    const searchId = decodeURIComponent(id).toLowerCase().trim();
+    return products.find(p => {
+      if (p.id && p.id.toLowerCase().trim() === searchId) return true;
+      if (p.title && p.title.toLowerCase().trim() === searchId) return true;
+      if (p.id && p.id.toLowerCase().replace(/\s+/g, '-') === searchId.replace(/\s+/g, '-')) return true;
+      return false;
+    });
+  };
 
   if (loading) {
     return <LoadingScreen />;

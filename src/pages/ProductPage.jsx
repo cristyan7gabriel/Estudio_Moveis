@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ProductsContext } from '../context/ProductsContext';
-import { WhatsAppDropdownBtn } from '../components/SharedComponents';
-import { ArrowLeft, MessageCircle, ShieldCheck, Truck, ChevronDown, ChevronUp } from 'lucide-react';
+import { WhatsAppDropdownBtn, ProductCarousel } from '../components/SharedComponents';
+import { ArrowLeft, MessageCircle, ShieldCheck, Truck, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, X } from 'lucide-react';
 
 export const ProductPage = () => {
   const { productId } = useParams();
-  const { categories, getProductById } = useContext(ProductsContext);
+  const { categories, products, getProductById, getProductsByCategory } = useContext(ProductsContext);
   const product = getProductById(productId);
   const [activeImage, setActiveImage] = useState('');
   const [touchStart, setTouchStart] = useState(null);
@@ -15,6 +15,7 @@ export const ProductPage = () => {
   const [isSwiping, setIsSwiping] = useState(false);
   const [isDescExpanded, setIsDescExpanded] = useState(false);
   const [isSpecsExpanded, setIsSpecsExpanded] = useState(false);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -32,6 +33,15 @@ export const ProductPage = () => {
   }
 
   const category = categories.find(c => c.id === product.categoryId);
+  let relatedProducts = getProductsByCategory(product.categoryId).filter(p => p.id !== product.id);
+  
+  if (relatedProducts.length < 6) {
+    const additionalProducts = products.filter(p => 
+      p.id !== product.id && !relatedProducts.some(rp => rp.id === p.id)
+    );
+    relatedProducts = [...relatedProducts, ...additionalProducts.slice(0, 8 - relatedProducts.length)];
+  }
+
   const hasGallery = product.images && product.images.length > 0;
 
   const isVideo = (src) => src?.toLowerCase().endsWith('.mp4');
@@ -78,6 +88,22 @@ export const ProductPage = () => {
     }
   };
 
+  const handlePrevImage = (e) => {
+    if(e) e.stopPropagation();
+    if (!hasGallery) return;
+    const currentIndex = product.images.indexOf(activeImage);
+    const newIndex = currentIndex === 0 ? product.images.length - 1 : currentIndex - 1;
+    setActiveImage(product.images[newIndex]);
+  };
+
+  const handleNextImage = (e) => {
+    if(e) e.stopPropagation();
+    if (!hasGallery) return;
+    const currentIndex = product.images.indexOf(activeImage);
+    const newIndex = currentIndex === product.images.length - 1 ? 0 : currentIndex - (-1); // workaround for + acting as concat
+    setActiveImage(product.images[newIndex]);
+  };
+
   return (
     <main style={{ minHeight: '80vh', paddingTop: '100px', paddingBottom: '4rem' }}>
       <div className="container">
@@ -88,31 +114,51 @@ export const ProductPage = () => {
         <div className="product-detail-grid">
           
           <div className="product-gallery">
-            <div 
-              onTouchStart={onTouchStart}
-              onTouchMove={onTouchMove}
-              onTouchEnd={onTouchEnd}
-              style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden', boxShadow: 'var(--shadow-medium)', marginBottom: '1.5rem', backgroundColor: '#f0f0f0', touchAction: 'pan-y pinch-zoom' }}
-            >
-              <div style={{
-                transform: `translateX(${swipeOffset}px)`,
-                transition: isSwiping ? 'none' : 'transform 0.3s ease-out',
-                width: '100%',
-                height: '100%'
-              }}>
-                {isVideo(activeImage) ? (
-                  <video 
-                    src={activeImage} 
-                    controls 
-                    autoPlay 
-                    muted 
-                    loop
-                    style={{ width: '100%', height: 'auto', display: 'block', minHeight: '400px', objectFit: 'cover' }} 
-                  />
-                ) : (
-                  <img src={activeImage} alt={product.title} style={{ width: '100%', height: 'auto', display: 'block', minHeight: '400px', objectFit: 'cover' }} />
-                )}
+            <div style={{ position: 'relative' }}>
+              <div 
+                onTouchStart={onTouchStart}
+                onTouchMove={onTouchMove}
+                onTouchEnd={onTouchEnd}
+                onClick={() => setIsLightboxOpen(true)}
+                style={{ borderRadius: 'var(--radius-md)', overflow: 'hidden', boxShadow: 'var(--shadow-medium)', marginBottom: '1.5rem', backgroundColor: '#f0f0f0', touchAction: 'pan-y pinch-zoom', cursor: 'zoom-in' }}
+              >
+                <div style={{
+                  transform: `translateX(${swipeOffset}px)`,
+                  transition: isSwiping ? 'none' : 'transform 0.3s ease-out',
+                  width: '100%',
+                  height: '100%'
+                }}>
+                  {isVideo(activeImage) ? (
+                    <video 
+                      src={activeImage} 
+                      controls 
+                      autoPlay 
+                      muted 
+                      loop
+                      style={{ width: '100%', height: 'auto', display: 'block', minHeight: '400px', objectFit: 'cover' }} 
+                    />
+                  ) : (
+                    <img src={activeImage} alt={product.title} style={{ width: '100%', height: 'auto', display: 'block', minHeight: '400px', objectFit: 'cover' }} />
+                  )}
+                </div>
               </div>
+
+              {hasGallery && product.images.length > 1 && (
+                <>
+                  <button 
+                    onClick={handlePrevImage}
+                    style={{ position: 'absolute', top: '50%', left: '10px', transform: 'translateY(-50%)', backgroundColor: 'rgba(255,255,255,0.8)', border: 'none', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', zIndex: 10, boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}
+                  >
+                    <ChevronLeft size={24} style={{ color: 'var(--color-primary)' }} />
+                  </button>
+                  <button 
+                    onClick={handleNextImage}
+                    style={{ position: 'absolute', top: '50%', right: '10px', transform: 'translateY(-50%)', backgroundColor: 'rgba(255,255,255,0.8)', border: 'none', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', zIndex: 10, boxShadow: '0 2px 5px rgba(0,0,0,0.1)' }}
+                  >
+                    <ChevronRight size={24} style={{ color: 'var(--color-primary)' }} />
+                  </button>
+                </>
+              )}
             </div>
             
             {hasGallery && (
@@ -383,6 +429,72 @@ export const ProductPage = () => {
           
         </div>
       </div>
+
+      {relatedProducts.length > 0 && (
+        <div style={{ marginTop: '2rem', paddingBottom: '2rem', borderTop: '1px solid rgba(0,0,0,0.05)' }}>
+          <ProductCarousel 
+            title="Produtos Relacionados" 
+            products={relatedProducts} 
+            categoryId={product.categoryId} 
+            compact={true}
+          />
+        </div>
+      )}
+
+      {isLightboxOpen && (
+        <div 
+          style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.9)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+          onClick={() => setIsLightboxOpen(false)}
+        >
+          <button 
+            style={{ position: 'absolute', top: '20px', right: '20px', background: 'none', border: 'none', color: 'white', cursor: 'pointer', zIndex: 10000 }}
+            onClick={() => setIsLightboxOpen(false)}
+          >
+            <X size={32} />
+          </button>
+
+          {hasGallery && product.images.length > 1 && (
+            <>
+              <button 
+                onClick={handlePrevImage}
+                style={{ position: 'absolute', left: '20px', background: 'rgba(255,255,255,0.1)', border: 'none', color: 'white', borderRadius: '50%', width: '50px', height: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', zIndex: 10000, transition: 'background 0.2s' }}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
+              >
+                <ChevronLeft size={32} />
+              </button>
+              <button 
+                onClick={handleNextImage}
+                style={{ position: 'absolute', right: '20px', background: 'rgba(255,255,255,0.1)', border: 'none', color: 'white', borderRadius: '50%', width: '50px', height: '50px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', zIndex: 10000, transition: 'background 0.2s' }}
+                onMouseEnter={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}
+                onMouseLeave={(e) => e.currentTarget.style.background = 'rgba(255,255,255,0.1)'}
+              >
+                <ChevronRight size={32} />
+              </button>
+            </>
+          )}
+
+          <div 
+            onClick={(e) => e.stopPropagation()}
+            style={{ maxWidth: '90vw', maxHeight: '90vh' }}
+          >
+            {isVideo(activeImage) ? (
+              <video 
+                src={activeImage} 
+                controls 
+                autoPlay 
+                style={{ maxWidth: '100%', maxHeight: '90vh', objectFit: 'contain' }} 
+              />
+            ) : (
+              <img 
+                src={activeImage} 
+                alt={product.title} 
+                style={{ maxWidth: '100%', maxHeight: '90vh', objectFit: 'contain', userSelect: 'none' }} 
+              />
+            )}
+          </div>
+        </div>
+      )}
     </main>
   );
 };
