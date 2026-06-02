@@ -56,6 +56,24 @@ const Hero = () => {
     return () => clearInterval(interval);
   }, [autoplay, featuredSections.length, productIndices.length]);
 
+  const { error } = useContext(ProductsContext);
+
+  if (error) {
+    return (
+      <section className="hero-new" style={{paddingTop: '120px', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+        <div className="container" style={{textAlign: 'center'}}>
+          <h3 style={{marginBottom: '1rem', fontFamily: 'var(--font-serif)', color: 'var(--color-accent)'}}>Ops! Não foi possível carregar os produtos.</h3>
+          <p style={{marginBottom: '1.5rem'}}>
+            Se você abriu este link pelo Instagram, clique nos <strong>3 pontinhos</strong> no topo da tela e escolha <strong>"Abrir no navegador"</strong> (Chrome ou Safari) para visualizar o site corretamente.
+          </p>
+          <button onClick={() => window.location.reload()} className="btn btn-primary" style={{color: '#fff', border: 'none'}}>
+            Tentar Novamente
+          </button>
+        </div>
+      </section>
+    );
+  }
+
   if (featuredSections.length === 0 || productIndices.length === 0) {
     return <section className="hero-new" style={{paddingTop: '120px', height: '100vh'}}><div className="container">Carregando Destaques...</div></section>;
   }

@@ -8,12 +8,14 @@ export const ProductsContext = createContext({
   categories: [],
   getProductsByCategory: () => [],
   getProductById: () => null,
+  error: null,
 });
 
 export const ProductsProvider = ({ children }) => {
   const [products, setProducts] = useState(localProducts);
   const [categories, setCategories] = useState(localCategories);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchSanityData = async () => {
@@ -63,8 +65,9 @@ export const ProductsProvider = ({ children }) => {
 
         setCategories(combinedCategories);
         setProducts(combinedProducts);
-      } catch (error) {
-        console.error("Erro ao buscar dados do Sanity:", error);
+      } catch (err) {
+        console.error("Erro ao buscar dados do Sanity:", err);
+        setError(err);
       } finally {
         setLoading(false);
       }
@@ -90,7 +93,7 @@ export const ProductsProvider = ({ children }) => {
   }
 
   return (
-    <ProductsContext.Provider value={{ products, categories, getProductsByCategory, getProductById }}>
+    <ProductsContext.Provider value={{ products, categories, getProductsByCategory, getProductById, error }}>
       {children}
     </ProductsContext.Provider>
   );
