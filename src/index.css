@@ -1757,4 +1757,16 @@ button {
   .category-page-layout {
     gap: 1rem;
   }
+  
+  /* Ajuste dos botões do carrossel para mobile */
+  .carousel-nav-btn.prev-btn {
+    left: 8px;
+    width: 36px;
+    height: 36px;
+  }
+  .carousel-nav-btn.next-btn {
+    right: 8px;
+    width: 36px;
+    height: 36px;
+  }
 }
